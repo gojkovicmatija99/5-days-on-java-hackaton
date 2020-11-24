@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -79,7 +80,7 @@ public class DataRepositoryImplementation implements DataRepository {
         JSONObject jo = new JSONObject();
         jo.put("first name", player.getFirstName());
         jo.put("last name", player.getLastName());
-        jo.put("sum points", sumPoints);
+        jo.put("sum points", sumPoints[0]);
         jo.put("avg points", avgPoints);
         jo.put("sum assists", sumPoints[1]);
         jo.put("avg assists", avgAssists);
@@ -147,8 +148,26 @@ public class DataRepositoryImplementation implements DataRepository {
         return listJo;
     }
 
-    public void getQuery5 () {
-
+    public String getQuery5 () throws JSONException {
+        List<Long> listDoubleDouble = new ArrayList<>();
+        for (Map.Entry<Long, Player> entry : this.players.entrySet()) {
+            listDoubleDouble.add(entry.getValue().getNumOfDoubleDouble());
+        }
+        Collections.sort(listDoubleDouble, Collections.reverseOrder());
+        List<JSONObject> listJo = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            JSONObject jo = new JSONObject();
+            for (Map.Entry<Long, Player> entry : this.players.entrySet()) {
+                if (entry.getValue().getNumOfDoubleDouble() == listDoubleDouble.get(i)) {
+                    jo.put("first name", entry.getValue().getFirstName());
+                    jo.put("last name", entry.getValue().getLastName());
+                    jo.put("num of double double", entry.getValue().getNumOfDoubleDouble());
+                    break;
+                }
+            }
+            listJo.add(jo);
+        }
+        return listJo.toString();
     }
 
     public void getQuery6 () {
