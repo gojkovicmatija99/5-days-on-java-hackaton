@@ -1,9 +1,10 @@
 package example.demo.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Team {
-    private long Id;
+    private long id;
     private String name;
     private String city;
     private int wins;
@@ -11,14 +12,15 @@ public class Team {
     private int scoreDiff;
     private List<Player> teamPlayers;
 
-
     public Team() {
+        this.teamPlayers = new ArrayList<>();
     }
 
     public Team(long id, String name, String city) {
-        Id = id;
+        this.id = id;
         this.name = name;
         this.city = city;
+        this.teamPlayers = new ArrayList<>();
     }
 
     public int getWins() {
@@ -49,16 +51,20 @@ public class Team {
         return teamPlayers;
     }
 
+    public void addTeamPlayer(Player player) {
+        teamPlayers.add(player);
+    }
+
     public void setTeamPlayers(List<Player> teamPlayers) {
         this.teamPlayers = teamPlayers;
     }
 
     public long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(long id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getName() {
@@ -80,7 +86,7 @@ public class Team {
     @Override
     public String toString() {
         return "Team{" +
-                "Id=" + Id +
+                "Id=" + id +
                 ", name='" + name + '\'' +
                 ", city='" + city + '\'' +
                 ", wins=" + wins +

@@ -1,5 +1,6 @@
 package example.demo.Model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -9,12 +10,18 @@ import java.util.Map;
 
 public class DataRepositoryImplementation implements DataRepository{
 
+    private Map<Long, Player> players;
+    private Map<Long, Team> teams;
+    private Map<Long, Game> games;
 
+    private ObjectMapper objectMapper = new ObjectMapper();
 
-    private List<Player> players;
-    private List<Team> teams;
-    private List<Game> games;
-
+    public DataRepositoryImplementation() {
+        StorageReader storageReader = new StorageReader();
+        players = storageReader.getPlayers();
+        teams = storageReader.getTeams();
+        games = storageReader.getGames();
+    }
 
 
     public String getQuery1 () throws JSONException {
@@ -78,7 +85,22 @@ public class DataRepositoryImplementation implements DataRepository{
         return jo.toString();
     }
 
+    public List<Player> getByPlayerPosition (Position p) {
+        List<Player> retList = new ArrayList<Player>();
+        for (int i=0; i<players.size(); i++) {
+            if (players.get(i).getPosition() == p)
+                retList.add(players.get(i));
+        }
+        return retList;
+    }
+
     public void getQuery4 () {
+        List<Player> pointGuard = getByPlayerPosition(Position.POINT_GUARD);
+        List<Player> shootingGuard = getByPlayerPosition(Position.SHOOTING_GUARD);
+        List<Player> smallGuard = getByPlayerPosition(Position.SMALL_FORWARD);
+        List<Player> powerGuard = getByPlayerPosition(Position.POWER_FORWARD);
+        List<Player> center = getByPlayerPosition(Position.CENTER);
+
 
     }
 

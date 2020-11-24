@@ -3,7 +3,7 @@ package example.demo.Model;
 import java.util.List;
 
 public class Game {
-    private long Id;
+    private long id;
     private long hostId;
     private long guestId;
     private int hostScore;
@@ -12,12 +12,18 @@ public class Game {
     public Game() {
     }
 
+    public Game(long id, long hostId, long guestId) {
+        this.id = id;
+        this.hostId = hostId;
+        this.guestId = guestId;
+    }
+
     public long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(long id) {
-        Id = id;
+        this.id = id;
     }
 
     public long getHostId() {
@@ -50,5 +56,16 @@ public class Game {
 
     public void setGuestScore(int guestScore) {
         this.guestScore = guestScore;
+    }
+
+    @Override
+    public String toString() {
+        return "Game{" +
+                "id=" + id +
+                ", hostId=" + hostId +
+                ", guestId=" + guestId +
+                ", hostScore=" + hostScore +
+                ", guestScore=" + guestScore +
+                '}';
     }
 }
