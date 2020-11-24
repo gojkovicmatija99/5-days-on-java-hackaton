@@ -83,7 +83,22 @@ public class DataRepositoryImplementation implements DataRepository{
         return jo.toString();
     }
 
+    public List<Player> getByPlayerPosition (Position p) {
+        List<Player> retList = new ArrayList<Player>();
+        for (int i=0; i<players.size(); i++) {
+            if (players.get(i).getPosition() == p)
+                retList.add(players.get(i));
+        }
+        return retList;
+    }
+
     public void getQuery4 () {
+        List<Player> pointGuard = getByPlayerPosition(Position.POINT_GUARD);
+        List<Player> shootingGuard = getByPlayerPosition(Position.SHOOTING_GUARD);
+        List<Player> smallGuard = getByPlayerPosition(Position.SMALL_FORWARD);
+        List<Player> powerGuard = getByPlayerPosition(Position.POWER_FORWARD);
+        List<Player> center = getByPlayerPosition(Position.CENTER);
+
 
     }
 
