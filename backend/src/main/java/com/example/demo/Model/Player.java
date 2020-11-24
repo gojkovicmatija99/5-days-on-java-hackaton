@@ -1,5 +1,8 @@
 package example.demo.Model;
 
+import java.util.List;
+import java.util.Map;
+
 public class Player {
     private long Id;
     private long teamId;
@@ -9,6 +12,7 @@ public class Player {
     private int height;
     private int age;
     private Position position;
+    private Map<Game, List<Integer>> gamesPlayed;
 
     public Player() {
     }

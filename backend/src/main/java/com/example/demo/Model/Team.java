@@ -1,9 +1,16 @@
 package example.demo.Model;
 
+import java.util.List;
+
 public class Team {
     private long Id;
     private String name;
     private String city;
+    private int wins;
+    private int loses;
+    private int scoreDiff;
+    private List<Player> teamPlayers;
+
 
     public Team() {
     }
