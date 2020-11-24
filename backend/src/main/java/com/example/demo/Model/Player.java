@@ -1,5 +1,7 @@
 package example.demo.Model;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,18 +59,18 @@ public class Player {
         return numOfDoubleDouble;
     }
 
-    public Long getSumPoints() {
-        long sumPoints = 0;
+    public int[] getSumPoints() {
+        int sumPoints[] = new int[3];
         for (Map.Entry<Long, List<Integer>> entry : this.getGamesPlayed().entrySet()) {
-            sumPoints += entry.getValue().get(0);
+            sumPoints[0] +=  entry.getValue().get(0);
         }
         return sumPoints;
     }
 
-    public Long getSumAssists() {
+    /*public Long getSumAssists() {
         long sumAssists = 0;
         for (Map.Entry<Long, List<Integer>> entry : this.getGamesPlayed().entrySet()) {
-            sumAssists += entry.getValue().get(0);
+            sumAssists += entry.getValue().get(1);
         }
         return sumAssists;
     }
@@ -76,10 +78,10 @@ public class Player {
     public Long getSumJumps() {
         long sumJumps = 0;
         for (Map.Entry<Long, List<Integer>> entry : this.getGamesPlayed().entrySet()) {
-            sumJumps += entry.getValue().get(0);
+            sumJumps += entry.getValue().get(2);
         }
         return sumJumps;
-    }
+    }*/
 
     public Map<Long, List<Integer>> getGamesPlayed() {
         return gamesPlayed;
