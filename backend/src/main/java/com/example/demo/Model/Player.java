@@ -12,7 +12,7 @@ public class Player {
     private int height;
     private int age;
     private Position position;
-    private Map<Game, List<Integer>> gamesPlayed;
+    private Map<Long, List<Integer>> gamesPlayed;
 
     public Player() {
     }
@@ -26,6 +26,14 @@ public class Player {
         this.height = height;
         this.age = age;
         this.position = position;
+    }
+
+    public Map<Long, List<Integer>> getGamesPlayed() {
+        return gamesPlayed;
+    }
+
+    public void setGamesPlayed(Map<Long, List<Integer>> gamesPlayed) {
+        this.gamesPlayed = gamesPlayed;
     }
 
     public long getId() {
