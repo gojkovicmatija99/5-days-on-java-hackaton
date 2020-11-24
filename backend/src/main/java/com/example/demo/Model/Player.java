@@ -28,6 +28,15 @@ public class Player {
         this.position = position;
     }
 
+    public List<Integer> getGameById(Long gameId) {
+        for (Map.Entry<Long, List<Integer>> entry : this.getGamesPlayed().entrySet()) {
+            if (entry.getKey().equals(gameId)) {
+                return entry.getValue();
+            }
+        }
+        return null;
+    }
+
     public Map<Long, List<Integer>> getGamesPlayed() {
         return gamesPlayed;
     }
