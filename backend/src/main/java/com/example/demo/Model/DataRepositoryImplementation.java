@@ -99,6 +99,8 @@ public class DataRepositoryImplementation implements DataRepository{
         return retList;
     }
 
+
+
     public void getQuery4 () {
         List<Player> pointGuard = getByPlayerPosition(Position.POINT_GUARD);
         List<Player> shootingGuard = getByPlayerPosition(Position.SHOOTING_GUARD);
