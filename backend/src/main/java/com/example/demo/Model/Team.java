@@ -21,6 +21,38 @@ public class Team {
         this.city = city;
     }
 
+    public int getWins() {
+        return wins;
+    }
+
+    public void setWins(int wins) {
+        this.wins = wins;
+    }
+
+    public int getLoses() {
+        return loses;
+    }
+
+    public void setLoses(int loses) {
+        this.loses = loses;
+    }
+
+    public int getScoreDiff() {
+        return scoreDiff;
+    }
+
+    public void setScoreDiff(int scoreDiff) {
+        this.scoreDiff = scoreDiff;
+    }
+
+    public List<Player> getTeamPlayers() {
+        return teamPlayers;
+    }
+
+    public void setTeamPlayers(List<Player> teamPlayers) {
+        this.teamPlayers = teamPlayers;
+    }
+
     public long getId() {
         return Id;
     }
