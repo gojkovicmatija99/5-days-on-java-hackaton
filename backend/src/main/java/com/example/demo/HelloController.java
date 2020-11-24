@@ -1,4 +1,4 @@
-package com.example.demo;
+package example.demo;
 
 import org.json.JSONException;
 import org.json.JSONObject;

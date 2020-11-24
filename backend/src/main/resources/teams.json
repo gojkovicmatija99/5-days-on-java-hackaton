@@ -1,0 +1,17 @@
+[ {
+  "id" : 1,
+  "name" : "Atlanta Hawks",
+  "city" : "Atlanta"
+}, {
+  "id" : 2,
+  "name" : "Boston Celtics",
+  "city" : "Boston"
+}, {
+  "id" : 3,
+  "name" : "Brooklyn Nets",
+  "city" : "Brooklyn"
+}, {
+  "id" : 4,
+  "name" : "Charlotte Hornets",
+  "city" : "Charlotte"
+} ]

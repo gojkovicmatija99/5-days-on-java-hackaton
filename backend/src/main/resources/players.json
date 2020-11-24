@@ -1,0 +1,181 @@
+[ {
+  "id" : 83,
+  "teamId" : 1,
+  "firstName" : "Doc",
+  "lastName" : "Rivers",
+  "number" : 17,
+  "height" : 182,
+  "age" : 35,
+  "position" : "POINT_GUARD"
+}, {
+  "id" : 64,
+  "teamId" : 1,
+  "firstName" : "Dominique",
+  "lastName" : "Wilkins",
+  "number" : 80,
+  "height" : 197,
+  "age" : 23,
+  "position" : "SHOOTING_GUARD"
+}, {
+  "id" : 30,
+  "teamId" : 1,
+  "firstName" : "Howard",
+  "lastName" : "Wright",
+  "number" : 45,
+  "height" : 198,
+  "age" : 25,
+  "position" : "SMALL_FORWARD"
+}, {
+  "id" : 84,
+  "teamId" : 1,
+  "firstName" : "Tim",
+  "lastName" : "McCormick",
+  "number" : 30,
+  "height" : 206,
+  "age" : 22,
+  "position" : "POWER_FORWARD"
+}, {
+  "id" : 45,
+  "teamId" : 1,
+  "firstName" : "Duane",
+  "lastName" : "Ferrell",
+  "number" : 92,
+  "height" : 220,
+  "age" : 35,
+  "position" : "CENTER"
+}, {
+  "id" : 204,
+  "teamId" : 2,
+  "firstName" : "Rick",
+  "lastName" : "Fox",
+  "number" : 51,
+  "height" : 194,
+  "age" : 21,
+  "position" : "POINT_GUARD"
+}, {
+  "id" : 7,
+  "teamId" : 2,
+  "firstName" : "Jabari",
+  "lastName" : "Bird",
+  "number" : 78,
+  "height" : 199,
+  "age" : 33,
+  "position" : "SHOOTING_GUARD"
+}, {
+  "id" : 315,
+  "teamId" : 2,
+  "firstName" : "Marcus",
+  "lastName" : "Webb",
+  "number" : 43,
+  "height" : 193,
+  "age" : 26,
+  "position" : "SMALL_FORWARD"
+}, {
+  "id" : 341,
+  "teamId" : 2,
+  "firstName" : "Acie",
+  "lastName" : "Earl",
+  "number" : 27,
+  "height" : 209,
+  "age" : 32,
+  "position" : "POWER_FORWARD"
+}, {
+  "id" : 471,
+  "teamId" : 2,
+  "firstName" : "Charles",
+  "lastName" : "Claxton",
+  "number" : 90,
+  "height" : 201,
+  "age" : 32,
+  "position" : "CENTER"
+}, {
+  "id" : 496,
+  "teamId" : 3,
+  "firstName" : "Ed",
+  "lastName" : "O'Bannon",
+  "number" : 94,
+  "height" : 188,
+  "age" : 31,
+  "position" : "POINT_GUARD"
+}, {
+  "id" : 211,
+  "teamId" : 3,
+  "firstName" : "Doug",
+  "lastName" : "Lee",
+  "number" : 89,
+  "height" : 192,
+  "age" : 30,
+  "position" : "SHOOTING_GUARD"
+}, {
+  "id" : 231,
+  "teamId" : 3,
+  "firstName" : "Kenny",
+  "lastName" : "Anderson",
+  "number" : 65,
+  "height" : 196,
+  "age" : 34,
+  "position" : "SMALL_FORWARD"
+}, {
+  "id" : 212,
+  "teamId" : 3,
+  "firstName" : "Rafael",
+  "lastName" : "Addison",
+  "number" : 53,
+  "height" : 209,
+  "age" : 24,
+  "position" : "POWER_FORWARD"
+}, {
+  "id" : 174,
+  "teamId" : 3,
+  "firstName" : "Roy",
+  "lastName" : "Hinson",
+  "number" : 96,
+  "height" : 207,
+  "age" : 21,
+  "position" : "CENTER"
+}, {
+  "id" : 205,
+  "teamId" : 4,
+  "firstName" : "Larry",
+  "lastName" : "Johnson",
+  "number" : 16,
+  "height" : 183,
+  "age" : 32,
+  "position" : "POINT_GUARD"
+}, {
+  "id" : 254,
+  "teamId" : 4,
+  "firstName" : "Cedric",
+  "lastName" : "Hunter",
+  "number" : 81,
+  "height" : 192,
+  "age" : 31,
+  "position" : "SHOOTING_GUARD"
+}, {
+  "id" : 177,
+  "teamId" : 4,
+  "firstName" : "Kevin",
+  "lastName" : "Lynch",
+  "number" : 46,
+  "height" : 195,
+  "age" : 25,
+  "position" : "SMALL_FORWARD"
+}, {
+  "id" : 247,
+  "teamId" : 4,
+  "firstName" : "Ronnie",
+  "lastName" : "Grandison",
+  "number" : 76,
+  "height" : 205,
+  "age" : 21,
+  "position" : "POWER_FORWARD"
+}, {
+  "id" : 296,
+  "teamId" : 4,
+  "firstName" : "Lorenzo",
+  "lastName" : "Williams",
+  "number" : 30,
+  "height" : 213,
+  "age" : 35,
+  "position" : "CENTER"
+} ]

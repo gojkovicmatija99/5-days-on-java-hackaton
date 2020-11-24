@@ -44,4 +44,17 @@ public class Team {
     public void setCity(String city) {
         this.city = city;
     }
+
+    @Override
+    public String toString() {
+        return "Team{" +
+                "Id=" + Id +
+                ", name='" + name + '\'' +
+                ", city='" + city + '\'' +
+                ", wins=" + wins +
+                ", loses=" + loses +
+                ", scoreDiff=" + scoreDiff +
+                ", teamPlayers=" + teamPlayers +
+                '}';
+    }
 }

@@ -37,4 +37,13 @@ public class Event {
     public void setPayload(Payload payload) {
         this.payload = payload;
     }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "game=" + game +
+                ", type=" + type +
+                ", payload=" + payload +
+                '}';
+    }
 }

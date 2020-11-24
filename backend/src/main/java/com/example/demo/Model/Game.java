@@ -8,7 +8,4 @@ public class Game {
     private int hostScore;
     private int guestScore;
 
-    private List<Player> hostPlayers;
-    private List<Player> guestPlayers;
-
 }

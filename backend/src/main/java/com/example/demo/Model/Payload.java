@@ -50,4 +50,14 @@ public class Payload {
     public void setValue(int value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return "Payload{" +
+                "hostId=" + hostId +
+                ", guestId=" + guestId +
+                ", playerId=" + playerId +
+                ", value=" + value +
+                '}';
+    }
 }

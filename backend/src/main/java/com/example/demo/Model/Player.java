@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 public class Player {
-    private long Id;
+    private long id;
     private long teamId;
-    private String name;
-    private String surname;
+    private String firstName;
+    private String lastName;
     private int number;
     private int height;
     private int age;
@@ -17,11 +17,11 @@ public class Player {
     public Player() {
     }
 
-    public Player(long id, long teamId, String name, String surname, int number, int height, int age, Position position) {
-        Id = id;
+    public Player(long id, long teamId, String firstName, String lastName, int number, int height, int age, Position position) {
+        this.id = id;
         this.teamId = teamId;
-        this.name = name;
-        this.surname = surname;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.number = number;
         this.height = height;
         this.age = age;
@@ -29,11 +29,11 @@ public class Player {
     }
 
     public long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(long id) {
-        Id = id;
+        this.id = id;
     }
 
     public long getTeamId() {
@@ -44,20 +44,20 @@ public class Player {
         this.teamId = teamId;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public int getNumber() {
@@ -90,5 +90,20 @@ public class Player {
 
     public void setPosition(Position position) {
         this.position = position;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "Id=" + id +
+                ", teamId=" + teamId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", number=" + number +
+                ", height=" + height +
+                ", age=" + age +
+                ", position=" + position +
+                ", gamesPlayed=" + gamesPlayed +
+                '}';
     }
 }
