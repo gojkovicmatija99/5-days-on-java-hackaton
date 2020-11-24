@@ -39,7 +39,7 @@ public class DataRepositoryImplementation implements DataRepository{
         List<Player> l = getTeamById(game.getHostId()).getTeamPlayers();
         l.addAll(getTeamById(game.getGuestId()).getTeamPlayers());
         for (int i = 0; i<l.size(); i++) {
-            String playerName = l.get(i).getName();
+            //String playerName = l.get(i).getName();
             //List<int> score = (Map<Long,List<Integer>>)(l.get(i).getGamesPlayed())[game.getId()];
         }
     }

@@ -1,5 +1,6 @@
 package example.demo.Model;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ public class Player {
     private Map<Long, List<Integer>> gamesPlayed;
 
     public Player() {
+        this.gamesPlayed = new HashMap<>();
     }
 
     public Player(long id, long teamId, String firstName, String lastName, int number, int height, int age, Position position) {
@@ -26,6 +28,7 @@ public class Player {
         this.height = height;
         this.age = age;
         this.position = position;
+        this.gamesPlayed = new HashMap<>();
     }
 
     public Map<Long, List<Integer>> getGamesPlayed() {
@@ -66,6 +69,10 @@ public class Player {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public boolean doesPlayerHaveStatsOnCurrGame(long id) {
+        return gamesPlayed.containsKey(id);
     }
 
     public int getNumber() {
