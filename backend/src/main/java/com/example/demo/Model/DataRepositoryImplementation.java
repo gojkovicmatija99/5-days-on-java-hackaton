@@ -64,17 +64,12 @@ public class DataRepositoryImplementation implements DataRepository{
     }
 
     public String getQuery3 (Player player) throws JSONException {
-        int sumPoints = 0;
+        long sumPoints = player.getSumPoints();
         double avgPoints;
-        int sumAssists = 0;
+        long sumAssists = player.getSumAssists();
         double avgAssists;
-        int sumJumps = 0;
+        long sumJumps = player.getSumJumps();
         double avgJumps;
-        for (Map.Entry<Long, List<Integer>> entry : player.getGamesPlayed().entrySet()) {
-            sumPoints += entry.getValue().get(0);
-            sumAssists += entry.getValue().get(1);
-            sumJumps += entry.getValue().get(2);
-        }
         avgPoints = (double)sumPoints/player.getGamesPlayed().size();
         avgAssists = (double)sumAssists/player.getGamesPlayed().size();
         avgJumps = (double)sumJumps/player.getGamesPlayed().size();

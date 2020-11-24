@@ -40,6 +40,47 @@ public class Player {
         return null;
     }
 
+    public Long getNumOfDoubleDouble() {
+        long numOfDoubleDouble = 0;
+        int cnt = 0;
+        for (Map.Entry<Long, List<Integer>> entry : this.getGamesPlayed().entrySet()) {
+            if (entry.getValue().get(0) >= 10)
+                cnt++;
+            if (entry.getValue().get(1) >= 10)
+                cnt++;
+            if (entry.getValue().get(2) >= 10) {
+                cnt++;
+            }
+            if (cnt >= 2)
+                numOfDoubleDouble++;
+        }
+        return numOfDoubleDouble;
+    }
+
+    public Long getSumPoints() {
+        long sumPoints = 0;
+        for (Map.Entry<Long, List<Integer>> entry : this.getGamesPlayed().entrySet()) {
+            sumPoints += entry.getValue().get(0);
+        }
+        return sumPoints;
+    }
+
+    public Long getSumAssists() {
+        long sumAssists = 0;
+        for (Map.Entry<Long, List<Integer>> entry : this.getGamesPlayed().entrySet()) {
+            sumAssists += entry.getValue().get(0);
+        }
+        return sumAssists;
+    }
+
+    public Long getSumJumps() {
+        long sumJumps = 0;
+        for (Map.Entry<Long, List<Integer>> entry : this.getGamesPlayed().entrySet()) {
+            sumJumps += entry.getValue().get(0);
+        }
+        return sumJumps;
+    }
+
     public Map<Long, List<Integer>> getGamesPlayed() {
         return gamesPlayed;
     }
