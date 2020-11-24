@@ -3,6 +3,7 @@ package example.demo.Model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,13 +18,16 @@ public class DataRepositoryImplementation implements DataRepository{
 
 
     public String getQuery1 () throws JSONException {
-        JSONObject jo = new JSONObject();
+        List<JSONObject> listJO = new ArrayList<>();
         for (int i=0; i<games.size(); i++){
-            //jo = new JSONObject();
-            jo.put(getTeamById(games.get(i).getHostId()).getName(), games.get(i).getHostScore());
-            jo.put(getTeamById(games.get(i).getGuestId()).getName(), games.get(i).getGuestScore());
+            JSONObject jo = new JSONObject();
+            jo.put("host name", getTeamById(games.get(i).getHostId()).getName());
+            jo.put("host score", games.get(i).getHostScore());
+            jo.put("guest name", getTeamById(games.get(i).getGuestId()).getName());
+            jo.put("guest score", games.get(i).getGuestScore());
+            listJO.add(jo);
         }
-        return jo.toString();
+        return listJO.toString();
     }
 
     public Team getTeamById(long id) {
@@ -35,17 +39,48 @@ public class DataRepositoryImplementation implements DataRepository{
         return null;
     }
 
-    public void getQuery2 (Game game) {
+    public String getQuery2 (Game game) throws JSONException {
         List<Player> l = getTeamById(game.getHostId()).getTeamPlayers();
         l.addAll(getTeamById(game.getGuestId()).getTeamPlayers());
+        List<JSONObject> listJO = new ArrayList<>();
         for (int i = 0; i<l.size(); i++) {
-            //String playerName = l.get(i).getName();
-            //List<int> score = (Map<Long,List<Integer>>)(l.get(i).getGamesPlayed())[game.getId()];
+            List<Integer> score = l.get(i).getGameById(game.getId());
+            JSONObject jo = new JSONObject();
+            jo.put("first name", l.get(i).getFirstName());
+            jo.put("last name", l.get(i).getLastName());
+            jo.put("points", score.get(0));
+            jo.put("assists", score.get(1));
+            jo.put("jumps", score.get(2));
+            listJO.add(jo);
         }
+        return listJO.toString();
     }
 
-    public void getQuery3 () {
-
+    public String getQuery3 (Player player) throws JSONException {
+        int sumPoints = 0;
+        double avgPoints;
+        int sumAssists = 0;
+        double avgAssists;
+        int sumJumps = 0;
+        double avgJumps;
+        for (Map.Entry<Long, List<Integer>> entry : player.getGamesPlayed().entrySet()) {
+            sumPoints += entry.getValue().get(0);
+            sumAssists += entry.getValue().get(1);
+            sumJumps += entry.getValue().get(2);
+        }
+        avgPoints = (double)sumPoints/player.getGamesPlayed().size();
+        avgAssists = (double)sumAssists/player.getGamesPlayed().size();
+        avgJumps = (double)sumJumps/player.getGamesPlayed().size();
+        JSONObject jo = new JSONObject();
+        jo.put("first name", player.getFirstName());
+        jo.put("last name", player.getLastName());
+        jo.put("sum points", sumPoints);
+        jo.put("avg points", avgPoints);
+        jo.put("sum assists", sumAssists);
+        jo.put("avg assists", avgAssists);
+        jo.put("sum jumps", sumJumps);
+        jo.put("avg jumps", avgJumps);
+        return jo.toString();
     }
 
     public void getQuery4 () {
