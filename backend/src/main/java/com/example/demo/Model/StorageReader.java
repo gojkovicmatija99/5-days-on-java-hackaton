@@ -3,8 +3,7 @@ package example.demo.Model;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import javax.swing.text.html.parser.Entity;
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,13 +13,15 @@ public class StorageReader {
     private Map<Long, Player> players;
     private Map<Long, Team> teams;
     private Map<Long, Game> games;
+    private Map<Long, EventType> lastEvent;
     private ObjectMapper objectMapper = new ObjectMapper();
 
     public StorageReader() {
-        teams = this.readTeams();
-        players = this.readPlayers();
+        this.teams = this.readTeams();
+        this.players = this.readPlayers();
         this.addPlayerToTeam();
-        games = this.readGames();
+        this.lastEvent = new HashMap<>();
+        this.games = this.readGames();
     }
 
     private void initializeStatForPlayer(long playerId, long gameId) {
@@ -33,8 +34,18 @@ public class StorageReader {
         }
     }
 
-    private Map<Long, Game> eventToGames(List<Event> events) {
+    private void writeToLog(PrintWriter out, EventErrors eventErrors, long currEvent) {
+        if(eventErrors.equals(EventErrors.EventAlreadyStarted)) {
+            out.println("Event num: "+ currEvent+" -> Game already started!");
+        }
+    }
+
+    private Map<Long, Game> eventToGames(List<Event> events) throws IOException {
+        FileWriter fileWriter = new FileWriter("log.txt", true);
+        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+        PrintWriter out = new PrintWriter(bufferedWriter);
         Map<Long, Game> games = new HashMap<>();
+        long currEvent = 0;
         for(Event event:events) {
             long gameId = event.getGame();
             if(event.getType().equals(EventType.START)) {
@@ -43,9 +54,10 @@ public class StorageReader {
                     long guestId = event.getPayload().getGuestId();
                     Game game = new Game(gameId, hostId, guestId);
                     games.put(gameId, game);
+                    lastEvent.put(gameId, event.getType());
                 }
                 else {
-                    System.err.println("Already began!");
+                    writeToLog(out, EventErrors.EventAlreadyStarted, currEvent);
                 }
             }
             else if (event.getType().equals(EventType.END)) {
@@ -83,6 +95,7 @@ public class StorageReader {
                 players.get(playerId).getGamesPlayed().get(gameId).set(0, totalPoints);
                 this.addPointsToTeam(games, gameId, playerId, points);
             }
+            currEvent++;
         }
         return games;
     }
@@ -103,7 +116,7 @@ public class StorageReader {
     private Map<Long, Game> readGames() {
         try {
             List<Event> events = new ArrayList<>();
-            File file = new File("backend\\src\\main\\resources\\events.json");
+            File file = new File("backend\\src\\main\\resources\\events_with_errors.json");
             events = objectMapper.readValue(file, new TypeReference<List<Event>>() {});
             return eventToGames(events);
         }

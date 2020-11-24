@@ -7,10 +7,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class DemoApplicationTests {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         StorageReader storageReader =new StorageReader();
     }
-
     @Test
     void contextLoads() {
 
