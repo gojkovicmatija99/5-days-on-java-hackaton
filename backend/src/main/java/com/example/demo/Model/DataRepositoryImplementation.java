@@ -1,5 +1,6 @@
 package example.demo.Model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -9,12 +10,18 @@ import java.util.Map;
 
 public class DataRepositoryImplementation implements DataRepository{
 
+    private Map<Long, Player> players;
+    private Map<Long, Team> teams;
+    private Map<Long, Game> games;
 
+    private ObjectMapper objectMapper = new ObjectMapper();
 
-    private List<Player> players;
-    private List<Team> teams;
-    private List<Game> games;
-
+    public DataRepositoryImplementation() {
+        StorageReader storageReader = new StorageReader();
+        players = storageReader.getPlayers();
+        teams = storageReader.getTeams();
+        games = storageReader.getGames();
+    }
 
 
     public String getQuery1 () throws JSONException {

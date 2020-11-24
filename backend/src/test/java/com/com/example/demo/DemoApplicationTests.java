@@ -1,6 +1,6 @@
 package com.example.demo;
 
-import example.demo.Model.DRI;
+import example.demo.Model.StorageReader;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class DemoApplicationTests {
 
     public static void main(String[] args) {
-        DRI dri=new DRI();
+        StorageReader storageReader =new StorageReader();
     }
 
     @Test

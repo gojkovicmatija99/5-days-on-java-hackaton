@@ -10,21 +10,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DRI {
+public class StorageReader {
     private Map<Long, Player> players;
     private Map<Long, Team> teams;
     private Map<Long, Game> games;
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    public DRI() {
+    public StorageReader() {
         teams = this.readTeams();
         players = this.readPlayers();
-        this.setTeamPlayers();
+        this.addPlayerToTeam();
         games = this.readGames();
-
-        for (Map.Entry<Long,Player> player : players.entrySet()) {
-            System.out.println(player.getValue());
-        }
     }
 
     private void initializeStatForPlayer(long playerId, long gameId) {
@@ -56,26 +52,52 @@ public class DRI {
 
             }
             else if (event.getType().equals(EventType.ASSIST)) {
+                if(!games.containsKey(gameId)) {
+                    System.err.println("Game not started!");
+                    continue;
+                }
                 long playerId = event.getPayload().getPlayerId();
                 this.initializeStatForPlayer(playerId, gameId);
                 int totalAssists = players.get(playerId).getGamesPlayed().get(gameId).get(1) + 1;
                 players.get(playerId).getGamesPlayed().get(gameId).set(1, totalAssists);
             }
             else if (event.getType().equals(EventType.JUMP)) {
+                if(!games.containsKey(gameId)) {
+                    System.err.println("Game not started!");
+                    continue;
+                }
                 long playerId = event.getPayload().getPlayerId();
                 this.initializeStatForPlayer(playerId, gameId);
                 int totalJumps = players.get(playerId).getGamesPlayed().get(gameId).get(2) + 1;
                 players.get(playerId).getGamesPlayed().get(gameId).set(2, totalJumps);
             }
             else if (event.getType().equals(EventType.POINT)) {
+                if(!games.containsKey(gameId)) {
+                    System.err.println("Game not started!");
+                    continue;
+                }
                 long playerId = event.getPayload().getPlayerId();
                 int points = event.getPayload().getValue();
                 this.initializeStatForPlayer(playerId, gameId);
                 int totalPoints = players.get(playerId).getGamesPlayed().get(gameId).get(0) + points;
                 players.get(playerId).getGamesPlayed().get(gameId).set(0, totalPoints);
+                this.addPointsToTeam(games, gameId, playerId, points);
             }
         }
         return games;
+    }
+
+    private void addPointsToTeam(Map<Long, Game> games, Long gameId, Long playerId, int points) {
+        long teamId = players.get(playerId).getTeamId();
+        long hostId = games.get(gameId).getHostId();
+        if(teamId == hostId) {
+            int totalPoints = games.get(gameId).getHostScore() + points;
+            games.get(gameId).setHostScore(totalPoints);
+        }
+        else {
+            int totalPoints = games.get(gameId).getGuestScore() + points;
+            games.get(gameId).setGuestScore(totalPoints);
+        }
     }
 
     private Map<Long, Game> readGames() {
@@ -123,11 +145,22 @@ public class DRI {
             return null;
     }
 
-    private void setTeamPlayers() {
+    private void addPlayerToTeam() {
         for (Map.Entry<Long,Player> player : players.entrySet()) {
             long team = player.getValue().getTeamId();
             teams.get(team).addTeamPlayer(player.getValue());
         }
     }
 
+    public Map<Long, Game> getGames() {
+        return games;
+    }
+
+    public Map<Long, Player> getPlayers() {
+        return players;
+    }
+
+    public Map<Long, Team> getTeams() {
+        return teams;
+    }
 }

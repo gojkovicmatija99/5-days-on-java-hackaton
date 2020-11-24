@@ -57,4 +57,15 @@ public class Game {
     public void setGuestScore(int guestScore) {
         this.guestScore = guestScore;
     }
+
+    @Override
+    public String toString() {
+        return "Game{" +
+                "id=" + id +
+                ", hostId=" + hostId +
+                ", guestId=" + guestId +
+                ", hostScore=" + hostScore +
+                ", guestScore=" + guestScore +
+                '}';
+    }
 }
