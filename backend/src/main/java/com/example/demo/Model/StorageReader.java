@@ -13,15 +13,25 @@ public class StorageReader {
     private Map<Long, Player> players;
     private Map<Long, Team> teams;
     private Map<Long, Game> games;
+    private PrintWriter out;
     private ObjectMapper objectMapper = new ObjectMapper();
 
     public StorageReader() {
-        this.teams = this.readTeams();
-        this.players = this.readPlayers();
-        this.addPlayerToTeam();
-        this.games = this.readGames();
+        try {
+            FileWriter fileWriter = new FileWriter("log.txt", false);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            out = new PrintWriter(bufferedWriter);
 
+            this.teams = this.readTeams();
+            this.players = this.readPlayers();
+            this.addPlayerToTeam();
+            this.games = this.readGames();
 
+            out.close();
+        }
+        catch (IOException io) {
+            io.printStackTrace();
+        }
     }
 
     private void initializeStatForPlayer(long playerId, long gameId) {
@@ -34,19 +44,36 @@ public class StorageReader {
         }
     }
 
-    private void writeToLog(PrintWriter out, EventErrors eventErrors, long currEvent) {
+    private void writeToLog(EventErrors eventErrors, long gameId) {
         if(eventErrors.equals(EventErrors.EventAlreadyStarted)) {
-            out.println("Event num: "+ currEvent+" -> Game already started!");
+            out.println("Game ID: "+ gameId+" -> Game already started!");
         }
+        if(eventErrors.equals(EventErrors.EventAlreadyEnded)) {
+            out.println("Game ID: "+ gameId+" -> Game already ended!");
+        }
+        if(eventErrors.equals(EventErrors.EventNotStarted)) {
+            out.println("Game ID: "+ gameId+" -> Game not started!");
+        }
+        if(eventErrors.equals(EventErrors.AssistNotValid)) {
+            out.println("Game ID: "+ gameId+" -> Assist not valid!");
+        }
+
     }
 
-    private Map<Long, Game> eventToGames(List<Event> events) throws IOException {
-        FileWriter fileWriter = new FileWriter("log.txt", true);
-        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-        PrintWriter out = new PrintWriter(bufferedWriter);
+    private Map<Long, Game> eventToGames(Map<Long, List<Event>> eventsById){
         Map<Long, Game> games = new HashMap<>();
-        long currEvent = 0;
-        for(Event event:events) {
+        for (Map.Entry<Long, List<Event>> eventById : eventsById.entrySet()) {
+            List<Event> events = eventById.getValue();
+            this.traverseEventsWithSameId(events, games);
+        }
+        return games;
+    }
+
+
+
+    private void traverseEventsWithSameId(List<Event> events, Map<Long, Game> games) {
+        for(int i=0; i<events.size(); i++) {
+            Event event = events.get(i);
             long gameId = event.getGame();
             if(event.getType().equals(EventType.START)) {
                 if(!games.containsKey(gameId)) {
@@ -55,16 +82,20 @@ public class StorageReader {
                     Game game = new Game(gameId, hostId, guestId);
                     games.put(gameId, game);
                 }
-//                else {
-//                    writeToLog(out, EventErrors.EventAlreadyStarted, currEvent);
-//                }
+                else {
+                    writeToLog(EventErrors.EventAlreadyStarted, gameId);
+                }
             }
             else if (event.getType().equals(EventType.END)) {
-                trackFinishedGame(gameId);
+                this.trackFinishedGame(gameId, games);
             }
             else if (event.getType().equals(EventType.ASSIST)) {
                 if(!games.containsKey(gameId)) {
-                    System.err.println("Game not started!");
+                    writeToLog(EventErrors.EventNotStarted, gameId);
+                    continue;
+                }
+                if(!(i+1 < events.size() && events.get(i+1).getType().equals(EventType.POINT) && (events.get(i+1).getPayload().getValue() == 2 || events.get(i+1).getPayload().getValue() == 3))) {
+                    writeToLog(EventErrors.AssistNotValid, gameId);
                     continue;
                 }
                 long playerId = event.getPayload().getPlayerId();
@@ -74,7 +105,7 @@ public class StorageReader {
             }
             else if (event.getType().equals(EventType.JUMP)) {
                 if(!games.containsKey(gameId)) {
-                    System.err.println("Game not started!");
+                    writeToLog(EventErrors.EventNotStarted, gameId);
                     continue;
                 }
                 long playerId = event.getPayload().getPlayerId();
@@ -84,7 +115,7 @@ public class StorageReader {
             }
             else if (event.getType().equals(EventType.POINT)) {
                 if(!games.containsKey(gameId)) {
-                    System.err.println("Game not started!");
+                    writeToLog(EventErrors.EventNotStarted, gameId);
                     continue;
                 }
                 long playerId = event.getPayload().getPlayerId();
@@ -94,12 +125,10 @@ public class StorageReader {
                 players.get(playerId).getGamesPlayed().get(gameId).set(0, totalPoints);
                 this.addPointsToTeam(games, gameId, playerId, points);
             }
-            currEvent++;
         }
-        return games;
     }
 
-    private void trackFinishedGame(long gameId) {
+    private void trackFinishedGame(long gameId, Map<Long, Game> games) {
         Game currGame = games.get(gameId);
         int hostScoreDiff = currGame.getHostScore() - currGame.getGuestScore();
         int guestScoreDiff = currGame.getGuestScore() - currGame.getHostScore();
@@ -143,7 +172,17 @@ public class StorageReader {
             List<Event> events = new ArrayList<>();
             File file = new File("backend\\src\\main\\resources\\events.json");
             events = objectMapper.readValue(file, new TypeReference<List<Event>>() {});
-            return eventToGames(events);
+            Map<Long, List<Event>> eventsById = new HashMap<>();
+            for(Event event:events) {
+                long gameId = event.getGame();
+                if(!eventsById.containsKey(gameId)) {
+                    List<Event> eventList = new ArrayList<>();
+                    eventsById.put(gameId, eventList);
+                }
+                List<Event> eventList = eventsById.get(gameId);
+                eventList.add(event);
+            }
+            return eventToGames(eventsById);
         }
         catch (Exception exception) {
             exception.printStackTrace();

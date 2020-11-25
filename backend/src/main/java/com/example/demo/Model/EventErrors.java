@@ -1,5 +1,5 @@
 package example.demo.Model;
 
 public enum EventErrors {
-    EventAlreadyStarted, EventAlreadyEnded
+    EventAlreadyStarted, EventAlreadyEnded, EventNotStarted, AssistNotValid
 }
