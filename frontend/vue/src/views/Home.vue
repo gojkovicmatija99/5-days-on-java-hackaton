@@ -1,7 +1,10 @@
 <template>
   <div class="home">
+      <b-jumbotron header="5 dana na Javi" lead="Sanja nas organizovala">
+      </b-jumbotron>
       <b-container>
-        <b-table striped hover :items="games"></b-table>
+        <b-table striped hover :items="games" @row-clicked="showGameStats">
+        </b-table>
      </b-container>
   </div>
 </template>
@@ -19,7 +22,10 @@ export default {
      this.load_games();
   },
   methods: {
-    ...mapActions(['load_games'])
+    ...mapActions(['load_games']),
+    showGameStats: function (item, index, event) {
+      console.log(item);
+    }
   }
 }
 </script>
