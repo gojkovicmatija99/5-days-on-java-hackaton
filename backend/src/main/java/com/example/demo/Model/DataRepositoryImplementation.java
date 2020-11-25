@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DataRepositoryImplementation implements DataRepository {
+    private static DataRepositoryImplementation instance = null;
 
     private Map<Long, Player> players;
     private Map<Long, Team> teams;
@@ -17,7 +18,13 @@ public class DataRepositoryImplementation implements DataRepository {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    public DataRepositoryImplementation() {
+    public static DataRepositoryImplementation getInstance() {
+        if(instance == null)
+            instance = new DataRepositoryImplementation();
+        return instance;
+    }
+
+    private DataRepositoryImplementation() {
         StorageReader storageReader = new StorageReader();
         players = storageReader.getPlayers();
         teams = storageReader.getTeams();

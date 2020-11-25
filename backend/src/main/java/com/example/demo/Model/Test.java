@@ -11,7 +11,7 @@ public class Test {
 
 
     public static void main(String[] args) throws JSONException {
-        DataRepositoryImplementation storage = new DataRepositoryImplementation();
+        DataRepositoryImplementation storage = DataRepositoryImplementation.getInstance();
         System.out.println("Pa kaze:");
         System.out.println("Query:1 - " + storage.getQuery1());
 
