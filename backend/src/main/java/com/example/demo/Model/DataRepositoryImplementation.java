@@ -28,7 +28,6 @@ public class DataRepositoryImplementation implements DataRepository {
         games = storageReader.getGames();
     }
 
-
     public String getQuery1 () throws JSONException {
         List<Game> gamesList = new ArrayList<>();
         for (Map.Entry<Long, Game> entry : this.games.entrySet()) {

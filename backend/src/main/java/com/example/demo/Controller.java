@@ -4,10 +4,7 @@ import example.demo.Model.DataRepository;
 import example.demo.Model.DataRepositoryImplementation;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class Controller {
@@ -20,19 +17,19 @@ public class Controller {
         return dataRepository.getQuery1();
     }
 
-    /*
+
     @CrossOrigin
-    @RequestMapping("/api/2")
-    public String index2() throws JSONException {
-        return dataRepository.getQuery2();
+    @RequestMapping(value = "/api/2/{id}")
+    public String index2(@PathVariable Long id) throws JSONException {
+        return dataRepository.getQuery2(id);
     }
 
     @CrossOrigin
-    @RequestMapping("/api/3")
-    public String index3() throws JSONException {
-        return dataRepository.getQuery3();
+    @RequestMapping(value = "/api/3/{id}")
+    public String index3(@PathVariable Long id) throws JSONException {
+        return dataRepository.getQuery3(id);
     }
-     */
+
 
     //@CrossOrigin
     @GetMapping("/api/4")
