@@ -54,7 +54,8 @@ public class DataRepositoryImplementation implements DataRepository {
         return teams.get(id);
     }
 
-    public String getQuery2 (Game game) throws JSONException {
+    public String getQuery2 (long gameID) throws JSONException {
+        Game game = games.get(gameID);
         List<Player> l = teams.get(game.getHostId()).getTeamPlayers();
         l.addAll(teams.get(game.getGuestId()).getTeamPlayers());
         List<JSONObject> listJO = new ArrayList<>();
@@ -71,7 +72,8 @@ public class DataRepositoryImplementation implements DataRepository {
         return listJO.toString();
     }
 
-    public String getQuery3 (Player player) throws JSONException {
+    public String getQuery3 (long playerID) throws JSONException {
+        Player player = players.get(playerID);
         int[] sumPoints = player.getSumPoints();
         double avgPoints;
         double avgAssists;

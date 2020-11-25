@@ -15,17 +15,9 @@ public class Test {
         System.out.println("Pa kaze:");
         System.out.println("Query:1 - " + storage.getQuery1());
 
+        System.out.println("Query:2 - " + storage.getQuery2(1l));
 
-        Map<Long, Game> gMap = (storage.getGames());
-        //System.out.println(gMap);
-        Game g = gMap.get(1l);
-        //System.out.println(g);
-        System.out.println("Query:2 - " + storage.getQuery2(g));
-
-        Map<Long, Player> pMap = (storage.getPlayers());
-        //System.out.println(pMap);
-        Player p = pMap.get(231l);
-        System.out.println("Query:3 - " + storage.getQuery3(p));
+        System.out.println("Query:3 - " + storage.getQuery3(231l));
 
         System.out.println("Query:4 - " + storage.getQuery4());
 
