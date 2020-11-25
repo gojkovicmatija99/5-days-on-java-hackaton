@@ -152,15 +152,19 @@ public class DataRepositoryImplementation implements DataRepository {
             listDoubleDouble.add(entry.getValue().getNumOfDoubleDouble());
         }
         Collections.sort(listDoubleDouble, Collections.reverseOrder());
+        System.out.println(listDoubleDouble);
+        listDoubleDouble.subList(5, listDoubleDouble.size()).clear();
         List<JSONObject> listJo = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        System.out.println(listDoubleDouble);
+
+        for (Map.Entry<Long, Player> entry : this.players.entrySet()) {
             JSONObject jo = new JSONObject();
-            for (Map.Entry<Long, Player> entry : this.players.entrySet()) {
+            for (int i = 0; i < listDoubleDouble.size(); i++) {
                 if (entry.getValue().getNumOfDoubleDouble() == listDoubleDouble.get(i)) {
                     jo.put("first name", entry.getValue().getFirstName());
                     jo.put("last name", entry.getValue().getLastName());
                     jo.put("num of double double", entry.getValue().getNumOfDoubleDouble());
-                    break;
+                    listDoubleDouble.remove(i);
                 }
             }
             listJo.add(jo);

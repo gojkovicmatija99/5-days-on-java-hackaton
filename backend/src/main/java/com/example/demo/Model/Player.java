@@ -46,7 +46,6 @@ public class Player {
         long numOfDoubleDouble = 0;
         int cnt = 0;
         for (Map.Entry<Long, List<Integer>> entry : this.getGamesPlayed().entrySet()) {
-            cnt = 0;
             if (entry.getValue().get(0) >= 10)
                 cnt++;
             if (entry.getValue().get(1) >= 10)
@@ -56,12 +55,14 @@ public class Player {
             }
             if (cnt >= 2)
                 numOfDoubleDouble++;
+            cnt = 0;
         }
         return numOfDoubleDouble;
     }
 
     public int[] getSumPoints() {
         int sumPoints[] = new int[3];
+        System.out.println(gamesPlayed);
         for (Map.Entry<Long, List<Integer>> entry : this.getGamesPlayed().entrySet()) {
             sumPoints[0] += entry.getValue().get(0);
             sumPoints[1] += entry.getValue().get(1);
