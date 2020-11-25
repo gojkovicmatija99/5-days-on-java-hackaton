@@ -26,30 +26,29 @@ public class DataRepositoryImplementation implements DataRepository {
 
 
     public String getQuery1 () throws JSONException {
+        List<Game> gamesList = new ArrayList<>();
+        for (Map.Entry<Long, Game> entry : this.games.entrySet()) {
+            gamesList.add(entry.getValue());
+        }
         List<JSONObject> listJO = new ArrayList<>();
-        for (int i=0; i<games.size(); i++){
+        for (int i=0; i<gamesList.size(); i++){
             JSONObject jo = new JSONObject();
-            jo.put("host name", getTeamById(games.get(i).getHostId()).getName());
-            jo.put("host score", games.get(i).getHostScore());
-            jo.put("guest name", getTeamById(games.get(i).getGuestId()).getName());
-            jo.put("guest score", games.get(i).getGuestScore());
+            jo.put("host name", getTeamById(gamesList.get(i).getHostId()).getName());
+            jo.put("host score", gamesList.get(i).getHostScore());
+            jo.put("guest name", getTeamById(gamesList.get(i).getGuestId()).getName());
+            jo.put("guest score", gamesList.get(i).getGuestScore());
             listJO.add(jo);
         }
         return listJO.toString();
     }
 
     public Team getTeamById(long id) {
-        for (int i=0; i<teams.size(); i++)
-            if (teams.get(i).getId() == id)
-                return teams.get(i);
-
-        System.out.println("Nije nasao tim");
-        return null;
+        return teams.get(id);
     }
 
     public String getQuery2 (Game game) throws JSONException {
-        List<Player> l = getTeamById(game.getHostId()).getTeamPlayers();
-        l.addAll(getTeamById(game.getGuestId()).getTeamPlayers());
+        List<Player> l = teams.get(game.getHostId()).getTeamPlayers();
+        l.addAll(teams.get(game.getHostId()).getTeamPlayers());
         List<JSONObject> listJO = new ArrayList<>();
         for (int i = 0; i<l.size(); i++) {
             List<Integer> score = l.get(i).getGameById(game.getId());
@@ -187,4 +186,27 @@ public class DataRepositoryImplementation implements DataRepository {
         return listJo.toString();
     }
 
+    public Map<Long, Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(Map<Long, Player> players) {
+        this.players = players;
+    }
+
+    public Map<Long, Team> getTeams() {
+        return teams;
+    }
+
+    public void setTeams(Map<Long, Team> teams) {
+        this.teams = teams;
+    }
+
+    public Map<Long, Game> getGames() {
+        return games;
+    }
+
+    public void setGames(Map<Long, Game> games) {
+        this.games = games;
+    }
 }

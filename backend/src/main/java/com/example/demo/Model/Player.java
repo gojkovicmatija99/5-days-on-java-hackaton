@@ -69,22 +69,6 @@ public class Player {
         return sumPoints;
     }
 
-    /*public Long getSumAssists() {
-        long sumAssists = 0;
-        for (Map.Entry<Long, List<Integer>> entry : this.getGamesPlayed().entrySet()) {
-            sumAssists += entry.getValue().get(1);
-        }
-        return sumAssists;
-    }
-
-    public Long getSumJumps() {
-        long sumJumps = 0;
-        for (Map.Entry<Long, List<Integer>> entry : this.getGamesPlayed().entrySet()) {
-            sumJumps += entry.getValue().get(2);
-        }
-        return sumJumps;
-    }*/
-
     public Map<Long, List<Integer>> getGamesPlayed() {
         return gamesPlayed;
     }
