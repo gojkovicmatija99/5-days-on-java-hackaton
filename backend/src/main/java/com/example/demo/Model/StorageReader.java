@@ -13,15 +13,15 @@ public class StorageReader {
     private Map<Long, Player> players;
     private Map<Long, Team> teams;
     private Map<Long, Game> games;
-    private Map<Long, EventType> lastEvent;
     private ObjectMapper objectMapper = new ObjectMapper();
 
     public StorageReader() {
         this.teams = this.readTeams();
         this.players = this.readPlayers();
         this.addPlayerToTeam();
-        this.lastEvent = new HashMap<>();
         this.games = this.readGames();
+
+
     }
 
     private void initializeStatForPlayer(long playerId, long gameId) {
@@ -54,14 +54,13 @@ public class StorageReader {
                     long guestId = event.getPayload().getGuestId();
                     Game game = new Game(gameId, hostId, guestId);
                     games.put(gameId, game);
-                    lastEvent.put(gameId, event.getType());
                 }
-                else {
-                    writeToLog(out, EventErrors.EventAlreadyStarted, currEvent);
-                }
+//                else {
+//                    writeToLog(out, EventErrors.EventAlreadyStarted, currEvent);
+//                }
             }
             else if (event.getType().equals(EventType.END)) {
-
+                trackFinishedGame(gameId);
             }
             else if (event.getType().equals(EventType.ASSIST)) {
                 if(!games.containsKey(gameId)) {
@@ -100,6 +99,32 @@ public class StorageReader {
         return games;
     }
 
+    private void trackFinishedGame(long gameId) {
+        Game currGame = games.get(gameId);
+        int hostScoreDiff = currGame.getHostScore() - currGame.getGuestScore();
+        int guestScoreDiff = currGame.getGuestScore() - currGame.getHostScore();
+        long hostId = currGame.getHostId();
+        long guestId = currGame.getGuestId();
+        int totalDiff = teams.get(hostId).getScoreDiff() + hostScoreDiff;
+        teams.get(hostId).setScoreDiff(totalDiff);
+        totalDiff = teams.get(guestId).getScoreDiff() + guestScoreDiff;
+        teams.get(guestId).setScoreDiff(totalDiff);
+        if(hostScoreDiff > 0) {
+            int totalWins = teams.get(hostId).getWins() + 1;
+            teams.get(hostId).setWins(totalWins);
+
+            int totalLosses = teams.get(guestId).getLoses() + 1;
+            teams.get(guestId).setLoses(totalLosses);
+        }
+        else if(guestScoreDiff > 0) {
+            int totalWins = teams.get(guestId).getWins() + 1;
+            teams.get(guestId).setWins(totalWins);
+
+            int totalLosses = teams.get(hostId).getLoses() + 1;
+            teams.get(hostId).setLoses(totalLosses);
+        }
+    }
+
     private void addPointsToTeam(Map<Long, Game> games, Long gameId, Long playerId, int points) {
         long teamId = players.get(playerId).getTeamId();
         long hostId = games.get(gameId).getHostId();
@@ -116,7 +141,7 @@ public class StorageReader {
     private Map<Long, Game> readGames() {
         try {
             List<Event> events = new ArrayList<>();
-            File file = new File("backend\\src\\main\\resources\\events_with_errors.json");
+            File file = new File("backend\\src\\main\\resources\\events.json");
             events = objectMapper.readValue(file, new TypeReference<List<Event>>() {});
             return eventToGames(events);
         }
