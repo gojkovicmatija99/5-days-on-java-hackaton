@@ -16,6 +16,7 @@ public class Test {
         System.out.println("Query:1 - " + storage.getQuery1());
 
         System.out.println("Query:2 - " + storage.getQuery2(1l));
+        System.out.println("Query:2 - " + storage.getQuery2(4l));
 
         System.out.println("Query:3 - " + storage.getQuery3(231l));
 
