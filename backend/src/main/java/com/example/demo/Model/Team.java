@@ -28,7 +28,7 @@ public class Team {
     }
 
     public double getWinPercent() {
-        return (wins * 1.0 / loses);
+        return (wins * 1.0 / (wins+loses));
     }
 
     public void setWins(int wins) {
