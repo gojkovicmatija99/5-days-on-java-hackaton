@@ -62,7 +62,7 @@ public class Player {
 
     public int[] getSumPoints() {
         int sumPoints[] = new int[3];
-        System.out.println(gamesPlayed);
+        //System.out.println(gamesPlayed);
         for (Map.Entry<Long, List<Integer>> entry : this.getGamesPlayed().entrySet()) {
             sumPoints[0] += entry.getValue().get(0);
             sumPoints[1] += entry.getValue().get(1);
