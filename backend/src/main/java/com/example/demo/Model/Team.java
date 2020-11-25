@@ -87,6 +87,18 @@ public class Team {
         this.city = city;
     }
 
+    public void win() {
+        this.wins += 1;
+    }
+
+    public void lose() {
+        this.loses += 1;
+    }
+
+    public void addPoints(int points) {
+        this.scoreDiff += points;
+    }
+
     @Override
     public String toString() {
         return "Team{" +

@@ -8,6 +8,7 @@ public class Game {
     private long guestId;
     private int hostScore;
     private int guestScore;
+    private boolean isFinished;
 
     public Game() {
     }
@@ -16,6 +17,7 @@ public class Game {
         this.id = id;
         this.hostId = hostId;
         this.guestId = guestId;
+        isFinished = false;
     }
 
     public long getId() {
@@ -56,6 +58,22 @@ public class Game {
 
     public void setGuestScore(int guestScore) {
         this.guestScore = guestScore;
+    }
+
+    public void updateHostScore(int points) {
+        this.hostScore += points;
+    }
+
+    public void updateGuestScore(int points) {
+        this.guestScore += points;
+    }
+
+    public boolean isFinished() {
+        return isFinished;
+    }
+
+    public void setFinished(boolean finished) {
+        isFinished = finished;
     }
 
     @Override

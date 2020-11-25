@@ -13,21 +13,22 @@ public class StorageReader {
     private Map<Long, Player> players;
     private Map<Long, Team> teams;
     private Map<Long, Game> games;
-    private PrintWriter out;
+
+    private PrintWriter log;
     private ObjectMapper objectMapper = new ObjectMapper();
 
     public StorageReader() {
         try {
             FileWriter fileWriter = new FileWriter("log.txt", false);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            out = new PrintWriter(bufferedWriter);
+            log = new PrintWriter(bufferedWriter);
 
             this.teams = this.readTeams();
             this.players = this.readPlayers();
             this.addPlayerToTeam();
             this.games = this.readGames();
 
-            out.close();
+            log.close();
         }
         catch (IOException io) {
             io.printStackTrace();
@@ -46,131 +47,132 @@ public class StorageReader {
 
     private void writeToLog(EventErrors eventErrors, long gameId) {
         if(eventErrors.equals(EventErrors.EventAlreadyStarted)) {
-            out.println("Game ID: "+ gameId+" -> Game already started!");
+            log.println("Game ID: "+ gameId+" -> Game already started!");
         }
         if(eventErrors.equals(EventErrors.EventAlreadyEnded)) {
-            out.println("Game ID: "+ gameId+" -> Game already ended!");
+            log.println("Game ID: "+ gameId+" -> Game already ended!");
         }
         if(eventErrors.equals(EventErrors.EventNotStarted)) {
-            out.println("Game ID: "+ gameId+" -> Game not started!");
+            log.println("Game ID: "+ gameId+" -> Game not started!");
         }
         if(eventErrors.equals(EventErrors.AssistNotValid)) {
-            out.println("Game ID: "+ gameId+" -> Assist not valid!");
+            log.println("Game ID: "+ gameId+" -> Assist not valid!");
+        }
+        if(eventErrors.equals(EventErrors.PlayerNotInGame)) {
+            log.println("Game ID: "+ gameId+" -> Player is not in game!");
         }
 
     }
 
     private Map<Long, Game> eventToGames(Map<Long, List<Event>> eventsById){
-        Map<Long, Game> games = new HashMap<>();
+        Map<Long, Game> currGames = new HashMap<>();
         for (Map.Entry<Long, List<Event>> eventById : eventsById.entrySet()) {
             List<Event> events = eventById.getValue();
-            this.traverseEventsWithSameId(events, games);
+            this.traverseEventsWithSameId(events, currGames);
         }
-        return games;
+        return currGames;
     }
 
 
 
-    private void traverseEventsWithSameId(List<Event> events, Map<Long, Game> games) {
+    private void traverseEventsWithSameId(List<Event> events, Map<Long, Game> currGames) {
         for(int i=0; i<events.size(); i++) {
             Event event = events.get(i);
             long gameId = event.getGame();
             if(event.getType().equals(EventType.START)) {
-                if(!games.containsKey(gameId)) {
+                if(!currGames.containsKey(gameId)) {
                     long hostId = event.getPayload().getHostId();
                     long guestId = event.getPayload().getGuestId();
                     Game game = new Game(gameId, hostId, guestId);
-                    games.put(gameId, game);
+                    currGames.put(gameId, game);
                 }
                 else {
                     writeToLog(EventErrors.EventAlreadyStarted, gameId);
                 }
             }
             else if (event.getType().equals(EventType.END)) {
-                this.trackFinishedGame(gameId, games);
+                this.trackFinishedGame(gameId, currGames);
+                currGames.get(gameId).setFinished(true);
             }
-            else if (event.getType().equals(EventType.ASSIST)) {
-                if(!games.containsKey(gameId)) {
+            else {
+                long playerId = event.getPayload().getPlayerId();
+                if(!currGames.containsKey(gameId)) {
                     writeToLog(EventErrors.EventNotStarted, gameId);
                     continue;
                 }
-                if(!(i+1 < events.size() && events.get(i+1).getType().equals(EventType.POINT) && (events.get(i+1).getPayload().getValue() == 2 || events.get(i+1).getPayload().getValue() == 3))) {
-                    writeToLog(EventErrors.AssistNotValid, gameId);
+                if(!isPlayerInTeamThatIsPlayingGame(gameId, playerId, currGames)) {
+                    writeToLog(EventErrors.PlayerNotInGame, gameId);
                     continue;
                 }
-                long playerId = event.getPayload().getPlayerId();
-                this.initializeStatForPlayer(playerId, gameId);
-                int totalAssists = players.get(playerId).getGamesPlayed().get(gameId).get(1) + 1;
-                players.get(playerId).getGamesPlayed().get(gameId).set(1, totalAssists);
-            }
-            else if (event.getType().equals(EventType.JUMP)) {
-                if(!games.containsKey(gameId)) {
-                    writeToLog(EventErrors.EventNotStarted, gameId);
-                    continue;
+                if (event.getType().equals(EventType.ASSIST)) {
+                    if(!(i+1 < events.size() && events.get(i+1).getType().equals(EventType.POINT) && (events.get(i+1).getPayload().getValue() == 2 || events.get(i+1).getPayload().getValue() == 3))) {
+                        writeToLog(EventErrors.AssistNotValid, gameId);
+                        // Preskace u paru ako posle assista nemamo 2 ili 3 poena
+                        i++;
+                        continue;
+                    }
+                    final int ASSIST = 1;
+                    this.initializeStatForPlayer(playerId, gameId);
+                    int totalAssists = players.get(playerId).getGamesPlayed().get(gameId).get(ASSIST) + 1;
+                    players.get(playerId).getGamesPlayed().get(gameId).set(ASSIST, totalAssists);
                 }
-                long playerId = event.getPayload().getPlayerId();
-                this.initializeStatForPlayer(playerId, gameId);
-                int totalJumps = players.get(playerId).getGamesPlayed().get(gameId).get(2) + 1;
-                players.get(playerId).getGamesPlayed().get(gameId).set(2, totalJumps);
-            }
-            else if (event.getType().equals(EventType.POINT)) {
-                if(!games.containsKey(gameId)) {
-                    writeToLog(EventErrors.EventNotStarted, gameId);
-                    continue;
+                else if (event.getType().equals(EventType.JUMP)) {
+                    final int JUMP = 1;
+                    this.initializeStatForPlayer(playerId, gameId);
+                    int totalJumps = players.get(playerId).getGamesPlayed().get(gameId).get(JUMP) + 1;
+                    players.get(playerId).getGamesPlayed().get(gameId).set(JUMP, totalJumps);
                 }
-                long playerId = event.getPayload().getPlayerId();
-                int points = event.getPayload().getValue();
-                this.initializeStatForPlayer(playerId, gameId);
-                int totalPoints = players.get(playerId).getGamesPlayed().get(gameId).get(0) + points;
-                players.get(playerId).getGamesPlayed().get(gameId).set(0, totalPoints);
-                this.addPointsToTeam(games, gameId, playerId, points);
+                else if (event.getType().equals(EventType.POINT)) {
+                    final int POINT = 1;
+                    int points = event.getPayload().getValue();
+                    this.initializeStatForPlayer(playerId, gameId);
+                    int totalPoints = players.get(playerId).getGamesPlayed().get(gameId).get(POINT) + points;
+                    players.get(playerId).getGamesPlayed().get(gameId).set(POINT, totalPoints);
+                    this.addPointsToTeam(currGames, gameId, playerId, points);
+                }
             }
         }
     }
 
-    private void trackFinishedGame(long gameId, Map<Long, Game> games) {
-        Game currGame = games.get(gameId);
+    private boolean isPlayerInTeamThatIsPlayingGame(long gameId, long playerId, Map<Long, Game> currGames) {
+        long teamId = players.get(playerId).getTeamId();
+        long hostId = currGames.get(gameId).getHostId();
+        long guestId = currGames.get(gameId).getGuestId();
+        return (teamId == hostId || teamId == guestId);
+    }
+
+    private void trackFinishedGame(long gameId, Map<Long, Game> currGames) {
+        Game currGame = currGames.get(gameId);
         int hostScoreDiff = currGame.getHostScore() - currGame.getGuestScore();
         int guestScoreDiff = currGame.getGuestScore() - currGame.getHostScore();
         long hostId = currGame.getHostId();
         long guestId = currGame.getGuestId();
-        int totalDiff = teams.get(hostId).getScoreDiff() + hostScoreDiff;
-        teams.get(hostId).setScoreDiff(totalDiff);
-        totalDiff = teams.get(guestId).getScoreDiff() + guestScoreDiff;
-        teams.get(guestId).setScoreDiff(totalDiff);
+        teams.get(hostId).addPoints(hostScoreDiff);
+        teams.get(guestId).addPoints(guestScoreDiff);
         if(hostScoreDiff > 0) {
-            int totalWins = teams.get(hostId).getWins() + 1;
-            teams.get(hostId).setWins(totalWins);
-
-            int totalLosses = teams.get(guestId).getLoses() + 1;
-            teams.get(guestId).setLoses(totalLosses);
+            teams.get(hostId).win();
+            teams.get(guestId).lose();
         }
         else if(guestScoreDiff > 0) {
-            int totalWins = teams.get(guestId).getWins() + 1;
-            teams.get(guestId).setWins(totalWins);
-
-            int totalLosses = teams.get(hostId).getLoses() + 1;
-            teams.get(hostId).setLoses(totalLosses);
+            teams.get(guestId).win();
+            teams.get(hostId).lose();
         }
     }
 
-    private void addPointsToTeam(Map<Long, Game> games, Long gameId, Long playerId, int points) {
+    private void addPointsToTeam(Map<Long, Game> currGames, Long gameId, Long playerId, int points) {
         long teamId = players.get(playerId).getTeamId();
-        long hostId = games.get(gameId).getHostId();
-        if(teamId == hostId) {
-            int totalPoints = games.get(gameId).getHostScore() + points;
-            games.get(gameId).setHostScore(totalPoints);
-        }
-        else {
-            int totalPoints = games.get(gameId).getGuestScore() + points;
-            games.get(gameId).setGuestScore(totalPoints);
-        }
+        long hostId = currGames.get(gameId).getHostId();
+        long guestId = currGames.get(gameId).getGuestId();
+        if(teamId == hostId)
+            currGames.get(gameId).updateHostScore(points);
+        else if(teamId == guestId)
+            currGames.get(gameId).updateGuestScore(points);
     }
 
     private Map<Long, Game> readGames() {
         try {
             List<Event> events = new ArrayList<>();
-            File file = new File("backend\\src\\main\\resources\\events.json");
+            File file = new File("backend\\src\\main\\resources\\events_full.json");
             events = objectMapper.readValue(file, new TypeReference<List<Event>>() {});
             Map<Long, List<Event>> eventsById = new HashMap<>();
             for(Event event:events) {
