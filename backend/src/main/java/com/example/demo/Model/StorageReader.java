@@ -166,7 +166,7 @@ public class StorageReader {
     private Map<Long, Game> readGames() {
         try {
             List<Event> events;
-            File file = new File("backend\\src\\main\\resources\\events_with_errors.json");
+            File file = new File("backend\\src\\main\\resources\\events_full.json");
             events = objectMapper.readValue(file, new TypeReference<List<Event>>() {});
             Map<Long, List<Event>> eventsById = new HashMap<>();
             for(Event event:events) {
