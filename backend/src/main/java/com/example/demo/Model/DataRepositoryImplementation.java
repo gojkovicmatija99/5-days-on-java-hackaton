@@ -122,14 +122,14 @@ public class DataRepositoryImplementation implements DataRepository {
             if (maxArray[1] <= currArray[1]) {
                 if (maxArray[1] < currArray[1]) {
                     maxArray[1] = currArray[1];
-                    maxListArray[0] = new ArrayList<>();
+                    maxListArray[1] = new ArrayList<>();
                 }
                 maxListArray[1].add(p);
             }
             if (maxArray[2] <= currArray[2]) {
                 if (maxArray[2] < currArray[2]) {
                     maxArray[2] = currArray[2];
-                    maxListArray[0] = new ArrayList<>();
+                    maxListArray[2] = new ArrayList<>();
                 }
                 maxListArray[2].add(p);
             }
