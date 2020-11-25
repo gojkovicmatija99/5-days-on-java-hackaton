@@ -34,16 +34,16 @@ public class DataRepositoryImplementation implements DataRepository {
             gamesList.add(entry.getValue());
         }
         List<JSONObject> listJO = new ArrayList<>();
-        for (int i=0; i<gamesList.size(); i++){
+        for (Game game : gamesList) {
             JSONObject jo = new JSONObject();
-            Team t1 = getTeamById(gamesList.get(i).getHostId());
-            Team t2 = getTeamById(gamesList.get(i).getGuestId());
+            Team t1 = getTeamById(game.getHostId());
+            Team t2 = getTeamById(game.getGuestId());
             jo.put("hostName", t1.getName());
-            jo.put("hostScore", gamesList.get(i).getHostScore());
+            jo.put("hostScore", game.getHostScore());
             jo.put("guestName", t2.getName());
-            jo.put("guestScore", gamesList.get(i).getGuestScore());
-            jo.put("IsFinished", gamesList.get(i).isFinished());
-            jo.put("gameId", gamesList.get(i).getId());
+            jo.put("guestScore", game.getGuestScore());
+            jo.put("IsFinished", game.isFinished());
+            jo.put("gameId", game.getId());
             listJO.add(jo);
         }
         return listJO.toString();
@@ -60,6 +60,7 @@ public class DataRepositoryImplementation implements DataRepository {
         List<JSONObject> listJO = new ArrayList<>();
         for (int i = 0; i<l.size(); i++) {
             List<Integer> score = l.get(i).getGameById(game.getId());
+            if (score == null) System.out.println("score je null");
             JSONObject jo = new JSONObject();
             Player p = l.get(i);
             jo.put("firstName", p.getFirstName());
@@ -97,18 +98,8 @@ public class DataRepositoryImplementation implements DataRepository {
         return jo.toString();
     }
 
-    public List<Player> getByPlayerPosition (Position p) {
-        List<Player> retList = new ArrayList<Player>();
-        for (Map.Entry<Long, Player> entry : this.players.entrySet()) {
-            Player pl = entry.getValue();
-            if (pl.getPosition() == p)
-                retList.add(pl);
-        }
-        return retList;
-    }
-
     public List<Player>[] getMaximumScore () {
-        List<Player>[] maxListArray = new ArrayList[4];
+        List<Player>[] maxListArray = new ArrayList[3];
         maxListArray[0] = new ArrayList<>();
         maxListArray[1] = new ArrayList<>();
         maxListArray[2] = new ArrayList<>();
@@ -140,7 +131,6 @@ public class DataRepositoryImplementation implements DataRepository {
         }
         return maxListArray;
     }
-
 
     public String getQuery4 () throws JSONException {
         List<JSONObject> listJo = new ArrayList<>();

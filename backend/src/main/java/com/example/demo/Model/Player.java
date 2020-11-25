@@ -34,12 +34,7 @@ public class Player {
     }
 
     public List<Integer> getGameById(Long gameId) {
-        for (Map.Entry<Long, List<Integer>> entry : this.getGamesPlayed().entrySet()) {
-            if (entry.getKey().equals(gameId)) {
-                return entry.getValue();
-            }
-        }
-        return null;
+        return gamesPlayed.get(gameId);
     }
 
     public Long getNumOfDoubleDouble() {
@@ -61,8 +56,7 @@ public class Player {
     }
 
     public int[] getSumPoints() {
-        int sumPoints[] = new int[3];
-        //System.out.println(gamesPlayed);
+        int[] sumPoints = new int[3];
         for (Map.Entry<Long, List<Integer>> entry : this.getGamesPlayed().entrySet()) {
             sumPoints[0] += entry.getValue().get(0);
             sumPoints[1] += entry.getValue().get(1);
