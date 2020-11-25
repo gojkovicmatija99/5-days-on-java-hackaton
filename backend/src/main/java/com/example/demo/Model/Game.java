@@ -17,7 +17,7 @@ public class Game {
         this.id = id;
         this.hostId = hostId;
         this.guestId = guestId;
-        isFinished = false;
+        this.isFinished = false;
     }
 
     public long getId() {

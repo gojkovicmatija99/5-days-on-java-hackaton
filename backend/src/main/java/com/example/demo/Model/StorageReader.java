@@ -49,9 +49,6 @@ public class StorageReader {
         if(eventErrors.equals(EventErrors.EventAlreadyStarted)) {
             log.println("Game ID: "+ gameId+" -> Game already started!");
         }
-        if(eventErrors.equals(EventErrors.EventAlreadyEnded)) {
-            log.println("Game ID: "+ gameId+" -> Game already ended!");
-        }
         if(eventErrors.equals(EventErrors.EventNotStarted)) {
             log.println("Game ID: "+ gameId+" -> Game not started!");
         }
@@ -61,7 +58,6 @@ public class StorageReader {
         if(eventErrors.equals(EventErrors.PlayerNotInGame)) {
             log.println("Game ID: "+ gameId+" -> Player is not in game!");
         }
-
     }
 
     private Map<Long, Game> eventToGames(Map<Long, List<Event>> eventsById){
@@ -72,8 +68,6 @@ public class StorageReader {
         }
         return currGames;
     }
-
-
 
     private void traverseEventsWithSameId(List<Event> events, Map<Long, Game> currGames) {
         for(int i=0; i<events.size(); i++) {
@@ -96,7 +90,7 @@ public class StorageReader {
             }
             else {
                 long playerId = event.getPayload().getPlayerId();
-                if(!currGames.containsKey(gameId)) {
+                if(!currGames.containsKey(gameId) || currGames.get(gameId).isFinished()) {
                     writeToLog(EventErrors.EventNotStarted, gameId);
                     continue;
                 }
@@ -171,8 +165,8 @@ public class StorageReader {
 
     private Map<Long, Game> readGames() {
         try {
-            List<Event> events = new ArrayList<>();
-            File file = new File("backend\\src\\main\\resources\\events_full.json");
+            List<Event> events;
+            File file = new File("backend\\src\\main\\resources\\events_with_errors.json");
             events = objectMapper.readValue(file, new TypeReference<List<Event>>() {});
             Map<Long, List<Event>> eventsById = new HashMap<>();
             for(Event event:events) {
@@ -195,7 +189,7 @@ public class StorageReader {
     private Map<Long, Player> readPlayers() {
         try {
             Map<Long, Player> players = new HashMap<>();
-            List<Player> playersTmp = new ArrayList<>();
+            List<Player> playersTmp;
             File file = new File("backend\\src\\main\\resources\\players.json");
             playersTmp = objectMapper.readValue(file, new TypeReference<List<Player>>() {});
             for(Player player:playersTmp)
@@ -211,7 +205,7 @@ public class StorageReader {
     private Map<Long, Team> readTeams() {
         try {
             Map<Long, Team> teams = new HashMap<>();
-            List<Team> teamsTmp = new ArrayList<>();
+            List<Team> teamsTmp;
             File file = new File("backend\\src\\main\\resources\\teams.json");
             teamsTmp = objectMapper.readValue(file, new TypeReference<List<Team>>() {});
             for(Team team:teamsTmp)
