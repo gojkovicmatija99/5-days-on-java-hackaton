@@ -166,7 +166,7 @@ public class StorageReader {
     private Map<Long, Game> readGames() {
         try {
             List<Event> events;
-            File file = new File("backend\\src\\main\\resources\\events_full.json");
+            File file = new File("src\\main\\resources\\events.json");
             events = objectMapper.readValue(file, new TypeReference<List<Event>>() {});
             Map<Long, List<Event>> eventsById = new HashMap<>();
             for(Event event:events) {
@@ -190,7 +190,7 @@ public class StorageReader {
         try {
             Map<Long, Player> players = new HashMap<>();
             List<Player> playersTmp;
-            File file = new File("backend\\src\\main\\resources\\players.json");
+            File file = new File("src\\main\\resources\\players.json");
             playersTmp = objectMapper.readValue(file, new TypeReference<List<Player>>() {});
             for(Player player:playersTmp)
                 players.put(player.getId(), player);
@@ -206,7 +206,7 @@ public class StorageReader {
         try {
             Map<Long, Team> teams = new HashMap<>();
             List<Team> teamsTmp;
-            File file = new File("backend\\src\\main\\resources\\teams.json");
+            File file = new File("src\\main\\resources\\teams.json");
             teamsTmp = objectMapper.readValue(file, new TypeReference<List<Team>>() {});
             for(Team team:teamsTmp)
                 teams.put(team.getId(), team);
