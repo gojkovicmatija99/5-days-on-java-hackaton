@@ -36,11 +36,15 @@ public class DataRepositoryImplementation implements DataRepository {
         List<JSONObject> listJO = new ArrayList<>();
         for (int i=0; i<gamesList.size(); i++){
             JSONObject jo = new JSONObject();
-            jo.put("hostName", getTeamById(gamesList.get(i).getHostId()).getName());
+            Team t1 = getTeamById(gamesList.get(i).getHostId());
+            Team t2 = getTeamById(gamesList.get(i).getGuestId());
+            jo.put("hostName", t1.getName());
             jo.put("hostScore", gamesList.get(i).getHostScore());
-            jo.put("guestName", getTeamById(gamesList.get(i).getGuestId()).getName());
+            jo.put("guestName", t2.getName());
             jo.put("guestScore", gamesList.get(i).getGuestScore());
             jo.put("IsFinished", gamesList.get(i).isFinished());
+            jo.put("hostId", t1.getId());
+            jo.put("guestId", t2.getId());
             listJO.add(jo);
         }
         return listJO.toString();
