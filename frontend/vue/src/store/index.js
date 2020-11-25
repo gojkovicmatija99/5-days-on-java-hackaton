@@ -22,9 +22,7 @@ export default new Vuex.Store({
     set_games: function (state, gamesJson) {
       console.log(gamesJson[0]);
       for(var index in gamesJson) {
-        console.log(index);
         var hostName = gamesJson[index].hostName;
-        console.log(hostName);
         var hostScore = gamesJson[index].hostScore;
         var guestName = gamesJson[index].guestName;
         var guestScore = gamesJson[index].guestScore;
@@ -52,6 +50,7 @@ export default new Vuex.Store({
       });
     },
   },
+  
   modules: {
   }
 })
