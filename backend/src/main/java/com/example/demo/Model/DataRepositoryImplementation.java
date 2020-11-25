@@ -4,10 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DataRepositoryImplementation implements DataRepository {
     private static DataRepositoryImplementation instance = null;
@@ -106,14 +103,14 @@ public class DataRepositoryImplementation implements DataRepository {
         return retList;
     }
 
-    public List<Player>[] getMaximumScore (List<Player> players) {
+    public List<Player>[] getMaximumScore () {
         List<Player>[] maxListArray = new ArrayList[4];
         maxListArray[0] = new ArrayList<>();
         maxListArray[1] = new ArrayList<>();
         maxListArray[2] = new ArrayList<>();
         int [] maxArray = {-1,-1,-1};
-        for (int i=1; i < players.size(); i++) {
-            Player p = players.get(i);
+        for (Map.Entry<Long, Player> entry : this.players.entrySet()) {
+            Player p = entry.getValue();
             int[] currArray = p.getSumPoints();
             if (maxArray[0] <= currArray[0]) {
                 if (maxArray[0] < currArray[0]) {
@@ -142,30 +139,22 @@ public class DataRepositoryImplementation implements DataRepository {
 
 
     public String getQuery4 () throws JSONException {
-        List<Player> pointGuard = getByPlayerPosition(Position.POINT_GUARD);
-        List<Player> shootingGuard = getByPlayerPosition(Position.SHOOTING_GUARD);
-        List<Player> smallGuard = getByPlayerPosition(Position.SMALL_FORWARD);
-        List<Player> powerGuard = getByPlayerPosition(Position.POWER_FORWARD);
-        List<Player> center = getByPlayerPosition(Position.CENTER);
-
-        /*pointGuard = getMaximumScore(pointGuard);
-        shootingGuard = getMaximumScore(shootingGuard);
-        smallGuard = getMaximumScore(smallGuard);
-        powerGuard = getMaximumScore(powerGuard);
-        center = getMaximumScore(center);*/
-
-        List<Player> retList = pointGuard;
-        retList.addAll(shootingGuard);
-        retList.addAll(smallGuard);
-        retList.addAll(powerGuard);
-        retList.addAll(center);
-
         List<JSONObject> listJo = new ArrayList<>();
-        for (int i=0; i<retList.size(); i++) {
-            JSONObject jo = new JSONObject();
-            String name = retList.get(i).getFirstName()+ "-" + retList.get(i).getLastName();
-            jo.put(name, retList.get(i).getPosition());
-            listJo.add(jo);
+        List<Player>[] maxListArray = getMaximumScore();
+        for (int k=0; k<3; k++) {
+            Player player = maxListArray[k].get(0);
+            int val = player.getSumPoints()[k];
+            for (int i=0; i<maxListArray[k].size(); i++) {
+                JSONObject jo = new JSONObject();
+                Player p = maxListArray[k].get(i);
+                jo.put("name", p.getFirstName());
+                jo.put("surname", p.getLastName());
+                jo.put("score", val);
+                if (k == 0) jo.put("category", "points");
+                if (k == 1) jo.put("category", "assists");
+                if (k == 2) jo.put("category", "jumps");
+                listJo.add(jo);
+            }
         }
         return listJo.toString();
     }
@@ -176,10 +165,8 @@ public class DataRepositoryImplementation implements DataRepository {
             listDoubleDouble.add(entry.getValue().getNumOfDoubleDouble());
         }
         Collections.sort(listDoubleDouble, Collections.reverseOrder());
-        //System.out.println(listDoubleDouble);
         listDoubleDouble.subList(5, listDoubleDouble.size()).clear();
         List<JSONObject> listJo = new ArrayList<>();
-        //System.out.println(listDoubleDouble);
 
         for (Map.Entry<Long, Player> entry : this.players.entrySet()) {
             JSONObject jo = new JSONObject();
