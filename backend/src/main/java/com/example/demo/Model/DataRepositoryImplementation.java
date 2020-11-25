@@ -70,8 +70,6 @@ public class DataRepositoryImplementation implements DataRepository {
         double avgAssists;
         double avgJumps;
 
-        /*long sumAssists = player.getSumAssists();
-        long sumJumps = player.getSumJumps();*/
 
         avgPoints = (double)sumPoints[0]/player.getGamesPlayed().size();
         avgAssists = (double)sumPoints[1]/player.getGamesPlayed().size();
@@ -119,7 +117,7 @@ public class DataRepositoryImplementation implements DataRepository {
     }
 
 
-    public List<JSONObject> getQuery4 () throws JSONException {
+    public String getQuery4 () throws JSONException {
         List<Player> pointGuard = getByPlayerPosition(Position.POINT_GUARD);
         List<Player> shootingGuard = getByPlayerPosition(Position.SHOOTING_GUARD);
         List<Player> smallGuard = getByPlayerPosition(Position.SMALL_FORWARD);
@@ -145,7 +143,7 @@ public class DataRepositoryImplementation implements DataRepository {
             jo.put(name, retList.get(i).getPosition());
             listJo.add(jo);
         }
-        return listJo;
+        return listJo.toString();
     }
 
     public String getQuery5 () throws JSONException {
@@ -170,8 +168,23 @@ public class DataRepositoryImplementation implements DataRepository {
         return listJo.toString();
     }
 
-    public void getQuery6 () {
-
+    public String getQuery6 () throws JSONException {
+        List<Team> rankedTeams = new ArrayList<>();
+        for (Map.Entry<Long, Team> entry : this.teams.entrySet()) {
+            rankedTeams.add(entry.getValue());
+        }
+        Collections.sort(rankedTeams, new comparator("ASC"));
+        List<JSONObject> listJo = new ArrayList<>();
+        for (int i=0; i<rankedTeams.size(); i++) {
+            JSONObject jo = new JSONObject();
+            Team t = rankedTeams.get(i);
+            jo.put("team name", t.getName());
+            jo.put("wins", t.getWins());
+            jo.put("loses", t.getLoses());
+            jo.put("scoreDiff", t.getScoreDiff());
+            listJo.add(jo);
+        }
+        return listJo.toString();
     }
 
 }

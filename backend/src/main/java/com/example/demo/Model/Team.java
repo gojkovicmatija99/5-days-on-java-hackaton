@@ -27,6 +27,10 @@ public class Team {
         return wins;
     }
 
+    public double getWinPercent() {
+        return (wins * 1.0 / loses);
+    }
+
     public void setWins(int wins) {
         this.wins = wins;
     }
