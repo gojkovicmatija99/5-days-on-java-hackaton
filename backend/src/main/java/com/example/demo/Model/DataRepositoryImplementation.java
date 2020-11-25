@@ -56,7 +56,7 @@ public class DataRepositoryImplementation implements DataRepository {
 
     public String getQuery2 (Game game) throws JSONException {
         List<Player> l = teams.get(game.getHostId()).getTeamPlayers();
-        l.addAll(teams.get(game.getHostId()).getTeamPlayers());
+        l.addAll(teams.get(game.getGuestId()).getTeamPlayers());
         List<JSONObject> listJO = new ArrayList<>();
         for (int i = 0; i<l.size(); i++) {
             List<Integer> score = l.get(i).getGameById(game.getId());
@@ -195,8 +195,7 @@ public class DataRepositoryImplementation implements DataRepository {
             JSONObject jo = new JSONObject();
             Team t = rankedTeams.get(i);
             jo.put("team name", t.getName());
-            jo.put("wins", t.getWins());
-            jo.put("loses", t.getLoses());
+            jo.put("win percent", t.getWinPercent());
             jo.put("scoreDiff", t.getScoreDiff());
             listJo.add(jo);
         }
