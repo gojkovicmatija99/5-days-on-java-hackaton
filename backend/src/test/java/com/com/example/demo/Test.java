@@ -1,5 +1,8 @@
-package example.demo.Model;
+package com.example.demo;
 
+import example.demo.Model.DataRepositoryImplementation;
+import example.demo.Model.Game;
+import example.demo.Model.Player;
 import org.json.JSONException;
 
 import java.util.Map;

@@ -29,6 +29,9 @@ public class StorageReader {
             this.games = this.readGames();
 
             log.close();
+            for (Map.Entry<Long, Player> players : players.entrySet()) {
+                System.out.println(players);
+            }
         }
         catch (IOException io) {
             io.printStackTrace();
@@ -111,13 +114,13 @@ public class StorageReader {
                     players.get(playerId).getGamesPlayed().get(gameId).set(ASSIST, totalAssists);
                 }
                 else if (event.getType().equals(EventType.JUMP)) {
-                    final int JUMP = 1;
+                    final int JUMP = 2;
                     this.initializeStatForPlayer(playerId, gameId);
                     int totalJumps = players.get(playerId).getGamesPlayed().get(gameId).get(JUMP) + 1;
                     players.get(playerId).getGamesPlayed().get(gameId).set(JUMP, totalJumps);
                 }
                 else if (event.getType().equals(EventType.POINT)) {
-                    final int POINT = 1;
+                    final int POINT = 0;
                     int points = event.getPayload().getValue();
                     this.initializeStatForPlayer(playerId, gameId);
                     int totalPoints = players.get(playerId).getGamesPlayed().get(gameId).get(POINT) + points;
