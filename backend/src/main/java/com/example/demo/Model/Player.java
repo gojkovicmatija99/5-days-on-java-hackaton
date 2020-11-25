@@ -46,6 +46,7 @@ public class Player {
         long numOfDoubleDouble = 0;
         int cnt = 0;
         for (Map.Entry<Long, List<Integer>> entry : this.getGamesPlayed().entrySet()) {
+            cnt = 0;
             if (entry.getValue().get(0) >= 10)
                 cnt++;
             if (entry.getValue().get(1) >= 10)

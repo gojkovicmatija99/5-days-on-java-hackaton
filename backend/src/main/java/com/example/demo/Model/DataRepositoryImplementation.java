@@ -69,10 +69,10 @@ public class DataRepositoryImplementation implements DataRepository {
         double avgAssists;
         double avgJumps;
 
-
-        avgPoints = (double)sumPoints[0]/player.getGamesPlayed().size();
-        avgAssists = (double)sumPoints[1]/player.getGamesPlayed().size();
-        avgJumps = (double)sumPoints[2]/player.getGamesPlayed().size();
+        int numberOfGamesPlayed = player.getGamesPlayed().size();
+        avgPoints = (double)sumPoints[0]/numberOfGamesPlayed;
+        avgAssists = (double)sumPoints[1]/numberOfGamesPlayed;
+        avgJumps = (double)sumPoints[2]/numberOfGamesPlayed;
 
         JSONObject jo = new JSONObject();
         jo.put("first name", player.getFirstName());
@@ -88,9 +88,10 @@ public class DataRepositoryImplementation implements DataRepository {
 
     public List<Player> getByPlayerPosition (Position p) {
         List<Player> retList = new ArrayList<Player>();
-        for (int i=0; i<players.size(); i++) {
-            if (players.get(i).getPosition() == p)
-                retList.add(players.get(i));
+        for (Map.Entry<Long, Player> entry : this.players.entrySet()) {
+            Player pl = entry.getValue();
+            if (pl.getPosition() == p)
+                retList.add(pl);
         }
         return retList;
     }
@@ -138,7 +139,7 @@ public class DataRepositoryImplementation implements DataRepository {
         List<JSONObject> listJo = new ArrayList<>();
         for (int i=0; i<retList.size(); i++) {
             JSONObject jo = new JSONObject();
-            String name = retList.get(i).getFirstName() + retList.get(i).getLastName();
+            String name = retList.get(i).getFirstName()+ " " + retList.get(i).getLastName();
             jo.put(name, retList.get(i).getPosition());
             listJo.add(jo);
         }
@@ -172,7 +173,7 @@ public class DataRepositoryImplementation implements DataRepository {
         for (Map.Entry<Long, Team> entry : this.teams.entrySet()) {
             rankedTeams.add(entry.getValue());
         }
-        Collections.sort(rankedTeams, new comparator("ASC"));
+        Collections.sort(rankedTeams, new comparator("DESC"));
         List<JSONObject> listJo = new ArrayList<>();
         for (int i=0; i<rankedTeams.size(); i++) {
             JSONObject jo = new JSONObject();
