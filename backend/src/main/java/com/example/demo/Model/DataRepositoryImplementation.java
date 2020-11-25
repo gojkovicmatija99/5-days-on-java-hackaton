@@ -40,11 +40,11 @@ public class DataRepositoryImplementation implements DataRepository {
         List<JSONObject> listJO = new ArrayList<>();
         for (int i=0; i<gamesList.size(); i++){
             JSONObject jo = new JSONObject();
-            jo.put("host-name", getTeamById(gamesList.get(i).getHostId()).getName());
-            jo.put("host-score", gamesList.get(i).getHostScore());
-            jo.put("guest-name", getTeamById(gamesList.get(i).getGuestId()).getName());
-            jo.put("guest-score", gamesList.get(i).getGuestScore());
-            jo.put("Is-finished", gamesList.get(i).isFinished());
+            jo.put("hostName", getTeamById(gamesList.get(i).getHostId()).getName());
+            jo.put("hostScore", gamesList.get(i).getHostScore());
+            jo.put("guestName", getTeamById(gamesList.get(i).getGuestId()).getName());
+            jo.put("guestScore", gamesList.get(i).getGuestScore());
+            jo.put("IsFinished", gamesList.get(i).isFinished());
             listJO.add(jo);
         }
         return listJO.toString();
@@ -62,8 +62,8 @@ public class DataRepositoryImplementation implements DataRepository {
         for (int i = 0; i<l.size(); i++) {
             List<Integer> score = l.get(i).getGameById(game.getId());
             JSONObject jo = new JSONObject();
-            jo.put("first-name", l.get(i).getFirstName());
-            jo.put("last-name", l.get(i).getLastName());
+            jo.put("firstName", l.get(i).getFirstName());
+            jo.put("lastName", l.get(i).getLastName());
             jo.put("points", score.get(0));
             jo.put("assists", score.get(1));
             jo.put("jumps", score.get(2));
@@ -85,14 +85,14 @@ public class DataRepositoryImplementation implements DataRepository {
         avgJumps = (double)sumPoints[2]/numberOfGamesPlayed;
 
         JSONObject jo = new JSONObject();
-        jo.put("first-name", player.getFirstName());
-        jo.put("last-name", player.getLastName());
-        jo.put("sum-points", sumPoints[0]);
-        jo.put("avg-points", avgPoints);
-        jo.put("sum-assists", sumPoints[1]);
-        jo.put("avg-assists", avgAssists);
-        jo.put("sum-jumps", sumPoints[2]);
-        jo.put("avg-jumps", avgJumps);
+        jo.put("firstName", player.getFirstName());
+        jo.put("lastName", player.getLastName());
+        jo.put("sumPoints", sumPoints[0]);
+        jo.put("avgPoints", avgPoints);
+        jo.put("sumAssists", sumPoints[1]);
+        jo.put("avgAssists", avgAssists);
+        jo.put("sumJumps", sumPoints[2]);
+        jo.put("avgJumps", avgJumps);
         return jo.toString();
     }
 
@@ -187,9 +187,9 @@ public class DataRepositoryImplementation implements DataRepository {
             for (int i = 0; i < listDoubleDouble.size(); i++) {
                 if (entry.getValue().getNumOfDoubleDouble() == listDoubleDouble.get(i)) {
                     found = true;
-                    jo.put("first-name", entry.getValue().getFirstName());
-                    jo.put("last-name", entry.getValue().getLastName());
-                    jo.put("num-of-double-double", entry.getValue().getNumOfDoubleDouble());
+                    jo.put("firstName", entry.getValue().getFirstName());
+                    jo.put("lastName", entry.getValue().getLastName());
+                    jo.put("numOfDoubleDouble", entry.getValue().getNumOfDoubleDouble());
                     listDoubleDouble.remove(i);
                     break;
                 }
@@ -210,8 +210,8 @@ public class DataRepositoryImplementation implements DataRepository {
         for (int i=0; i<rankedTeams.size(); i++) {
             JSONObject jo = new JSONObject();
             Team t = rankedTeams.get(i);
-            jo.put("team-name", t.getName());
-            jo.put("win-percent", t.getWinPercent());
+            jo.put("teamName", t.getName());
+            jo.put("winPercent", t.getWinPercent());
             jo.put("scoreDiff", t.getScoreDiff());
             listJo.add(jo);
         }
