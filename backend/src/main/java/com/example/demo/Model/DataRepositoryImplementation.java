@@ -61,11 +61,13 @@ public class DataRepositoryImplementation implements DataRepository {
         for (int i = 0; i<l.size(); i++) {
             List<Integer> score = l.get(i).getGameById(game.getId());
             JSONObject jo = new JSONObject();
-            jo.put("firstName", l.get(i).getFirstName());
-            jo.put("lastName", l.get(i).getLastName());
+            Player p = l.get(i);
+            jo.put("firstName", p.getFirstName());
+            jo.put("lastName", p.getLastName());
             jo.put("points", score.get(0));
             jo.put("assists", score.get(1));
             jo.put("jumps", score.get(2));
+            jo.put("playerId",p.getId());
             listJO.add(jo);
         }
         return listJO.toString();
