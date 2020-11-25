@@ -63,14 +63,9 @@ public class DataRepositoryImplementation implements DataRepository {
         l.addAll(t1List);
         l.addAll(t2List);
 
-        System.out.println("t1List: " + t1List.size() + " : "  + t1List);
-        System.out.println("t2List: " + t2List.size() + " : "  + t2List);
-
         List<JSONObject> listJO = new ArrayList<>();
         for (int i = 0; i<l.size(); i++) {
             List<Integer> score = l.get(i).getGameById(game.getId());
-            if (score == null) System.out.println("score je null");
-            System.out.println(score);
             JSONObject jo = new JSONObject();
             Player p = l.get(i);
             jo.put("firstName", p.getFirstName());
@@ -81,7 +76,6 @@ public class DataRepositoryImplementation implements DataRepository {
             jo.put("playerId",p.getId());
             listJO.add(jo);
         }
-        System.out.println("+--------------------------+");
         return listJO.toString();
     }
 
