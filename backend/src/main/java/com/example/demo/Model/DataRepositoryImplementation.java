@@ -43,8 +43,7 @@ public class DataRepositoryImplementation implements DataRepository {
             jo.put("guestName", t2.getName());
             jo.put("guestScore", gamesList.get(i).getGuestScore());
             jo.put("IsFinished", gamesList.get(i).isFinished());
-            jo.put("hostId", t1.getId());
-            jo.put("guestId", t2.getId());
+            jo.put("gameId", gamesList.get(i).getId());
             listJO.add(jo);
         }
         return listJO.toString();
