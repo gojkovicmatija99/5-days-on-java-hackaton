@@ -1,4 +1,4 @@
-package com.example.demo;
+package example.demo.Model;
 
 import example.demo.Model.DataRepositoryImplementation;
 import example.demo.Model.Game;

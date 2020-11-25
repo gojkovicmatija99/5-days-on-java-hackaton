@@ -29,9 +29,6 @@ public class StorageReader {
             this.games = this.readGames();
 
             log.close();
-            for (Map.Entry<Long, Player> players : players.entrySet()) {
-                System.out.println(players);
-            }
         }
         catch (IOException io) {
             io.printStackTrace();
