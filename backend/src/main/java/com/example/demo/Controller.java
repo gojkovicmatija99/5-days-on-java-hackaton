@@ -14,7 +14,7 @@ public class Controller {
 
     DataRepository dataRepository = DataRepositoryImplementation.getInstance();
 
-    //@CrossOrigin
+    @CrossOrigin
     @GetMapping("/api/1")
     public String index1() throws JSONException {
         return dataRepository.getQuery1();
