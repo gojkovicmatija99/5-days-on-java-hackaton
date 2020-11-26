@@ -85,6 +85,10 @@ public class StorageReader {
                 }
             }
             else if (event.getType().equals(EventType.END)) {
+                if(!currGames.containsKey(gameId) || currGames.get(gameId).isFinished()) {
+                    writeToLog(EventErrors.EventNotStarted, gameId);
+                    continue;
+                }
                 this.trackFinishedGame(gameId, currGames);
                 currGames.get(gameId).setFinished(true);
             }
