@@ -32,6 +32,7 @@ export default new Vuex.Store({
   },
   mutations: {
     set_games: function (state, gamesJson) {
+      state.games = []
       for(var index in gamesJson) {
         var gameId = gamesJson[index].gameId;
         var hostName = gamesJson[index].hostName;
