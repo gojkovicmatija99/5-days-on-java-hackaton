@@ -58,6 +58,9 @@ public class StorageReader {
         if(eventErrors.equals(EventErrors.PlayerNotInGame)) {
             log.println("Game ID: "+ gameId+" -> Player is not in game!");
         }
+        if(eventErrors.equals(EventErrors.EventWithOneTeam)) {
+            log.println("Game ID: "+ gameId+" -> There needs to be two teams!");
+        }
     }
 
     private Map<Long, Game> eventToGames(Map<Long, List<Event>> eventsById){
@@ -77,6 +80,10 @@ public class StorageReader {
                 if(!currGames.containsKey(gameId)) {
                     long hostId = event.getPayload().getHostId();
                     long guestId = event.getPayload().getGuestId();
+                    if(hostId == guestId) {
+                        writeToLog(EventErrors.EventWithOneTeam, gameId);
+                        continue;
+                    }
                     Game game = new Game(gameId, hostId, guestId);
                     currGames.put(gameId, game);
                 }
@@ -170,7 +177,7 @@ public class StorageReader {
     private Map<Long, Game> readGames() {
         try {
             List<Event> events;
-            File file = new File("src\\main\\resources\\events.json");
+            File file = new File("src\\main\\resources\\events_with_errors.json");
             events = objectMapper.readValue(file, new TypeReference<List<Event>>() {});
             Map<Long, List<Event>> eventsById = new HashMap<>();
             for(Event event:events) {
