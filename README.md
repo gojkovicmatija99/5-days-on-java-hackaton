@@ -1,4 +1,4 @@
-# 5 days on java hackaton
+# 5 days on Java hackaton
 
 ## Requirement
 
