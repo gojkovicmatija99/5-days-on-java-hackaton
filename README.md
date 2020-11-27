@@ -1,5 +1,8 @@
 # 5 days on Java hackaton
 
+
+![alt text](https://github.com/gojkovicmatija99/5-days-on-java-hackaton/blob/master/demo.PNG)
+
 ## Requirement
 
 Basketball is one of the most popular sports in the world and in line with the needs of watching games
@@ -91,3 +94,5 @@ The Java Spring Boot framework was used to create the backend part of the projec
 part of the project used the Vue JS framework. In the backend in the Controller class we have paths to get
 requests, and then in the frontend we take that data that we sent and display it in the browser.
 We did not use any database, but we take the data from json files. Reading from files we work in the StorageReader class.
+
+![alt text](https://github.com/gojkovicmatija99/5-days-on-java-hackaton/blob/master/classModel.PNG)
