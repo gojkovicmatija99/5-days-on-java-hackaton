@@ -13,6 +13,8 @@ considered the American NBA League. Based on their match tracking system and tea
 we will build our prototype.
 The plan is for our application to support statistical processing as well as event handling.
 
+### Backend
+
 The task is to create a Java web application to display matches and details of individual matches.
 The following queries need to be implemented, supported:
 - QUERY_ID: 1 - Show all matches with current results. Both active and completed are considered
@@ -30,11 +32,13 @@ categories for which the player has achieved a double-digit performance)
 matches (if the teams have the same percentage, the advantage is given to the team that has a better overall
 basket difference)
 
-Frontend :
+### Frontend
 The initial frontend should contain the following visualizations (QUERY_ID: 1, QUERY_ID: 2):
 - View all matches with results
 - View details of one selected match with player statistics for that match (number
 points, assists and rebounds per player)
+
+### JSON files
 
 Entries to the application are:
 - Configuration JSON file with data on teams and players
@@ -65,6 +69,8 @@ Payload:
 - guestId: long,
 - playerId: long,
 - value: int}Polje “type” je tipa ENUM i prihvata sledeće vrednosti:1.START2.END3.ASSIST4.JUMP5.POIN
+
+### Event constraints
 
 When loading a JSON data file, skip loading events that do not meet the rules and log them:
 - The finished match must be covered between START and END events.
