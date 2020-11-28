@@ -80,7 +80,7 @@ points scored by that player, average points per game, number of total assists, 
 assistance per game, number of total rebounds, average rebounds per game.
 4. query4: get the request sent in the path *localhost:8080/api/4*. As a return value
 we get the player who has the best score in a certain category as well as what that score is.
-5. query5: get the request sent to the path 5localhost:8080/api/5*. As a return value
+5. query5: get the request sent to the path *localhost:8080/api/5*. As a return value
 we get the top 5 players who scored the most “double-doubles” and how many they scored
 "double-double".
 6. query6: get the request sent in the path *localhost:8080/api/6*. As a return value we get sorted teams by the percentage of victories, if the percentage of victories is the same
