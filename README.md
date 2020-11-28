@@ -40,6 +40,32 @@ Entries to the application are:
 - Configuration JSON file with data on teams and players
 - JSON file with a list of events that describe the course of matches
 
+Team:
+- Id: long,
+- name: string,
+- city: string
+
+Player:
+- Id: long,
+- teamId: long,
+- name: string,
+ -surname: string,
+ - number: int,
+ - height: int,
+ - age: int,
+  -position: enum (POINT_GUARD, SHOOTING_GUARD, SMALL_FORWARD, POWER_FORWARD, CENTERE)
+  
+Event:
+- game: long,
+- type: enum (START, END, ASSIST, JUMP, POINT),
+- payload: object
+
+Payload:
+- hostId: long,
+- guestId: long,
+- playerId: long,
+- value: int}Polje “type” je tipa ENUM i prihvata sledeće vrednosti:1.START2.END3.ASSIST4.JUMP5.POIN
+
 When loading a JSON data file, skip loading events that do not meet the rules and log them:
 - The finished match must be covered between START and END events.
 - It is also important to emphasize the possibility of a lack of END event, which therefore means that it is a match
