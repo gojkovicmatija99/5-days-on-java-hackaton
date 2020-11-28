@@ -25,7 +25,7 @@ jumps, assists)
 match (one player per category, if more players have achieved the same maximum number show them
 all)
 - QUERY_ID: 5 - Show the top 5 players with the most “double-doubles” (any 2 statistics
-categories for which the player has achieved a double-digit performance. Explanation below the task)
+categories for which the player has achieved a double-digit performance)
 - QUERY_ID: 6 - Show team rankings - calculated based on the percentage of wins in all
 matches (if the teams have the same percentage, the advantage is given to the team that has a better overall
 basket difference)
@@ -60,38 +60,35 @@ The application is built by running mvn clean install.
 
 ### Example of how to run an application:
 The application is launched through the Application class, which is located in the backend folder. After we
-launched the application, it starts working on localhost on port 8080. When loaded the main page displayes the result of query1, and when we click on a match (row in the table), it is displayed in the new table
+launched the application, it starts working on localhost on port 8080. When loaded the main page displayes the result of query1, where the green matchs are still being played and when we click on a match (row in the table), it is displayed in the new table
 statistics for all players in the selected match.
 Also the file that logs invalid log.txt events is located at the root of the project. Files that are
-used to enter the program are located in the resources folder named teams.json, players.json and
+used as input for the program are located in the resources folder named teams.json, players.json and
 events.json.
 
 ### Example of calling REST endpoints for each implemented query:
-1. query1: get the request sent in the path localhost: 8080 / api / 1. As a return value
-Page 2
-we get a list of all matches where each match has the following data: home name
+1. query1: get the request sent in the path *localhost:8080/api/1*. As a return value we get a list of all matches where each match has the following data: home name
 team, the name of the visiting team, the number of points scored by the host, the number of points scored
 guest, whether the match is over and the match id.
-2. query2: get the request sent to the path localhost: 8080 / api / 2 / id. As a return value
+2. query2: get the request sent to the path *localhost:8080/api/2/{id}*. As a return value
 we get a list of all the players of one game, and that is the game whose id we forwarded in the path.
 We get the performance of each player in that game, and that is the number of points scored, assists
 and jumps.
-3. query3: get the request sent in the path localhost: 8080 / api / 3 / id. As a return value
+3. query3: get the request sent in the path *localhost:8080/api/3/{id}*. As a return value
 we get data about the player whose id we forwarded in the path. We get the number total
 points scored by that player, average points per game, number of total assists, average
 assistance per game, number of total rebounds, average rebounds per game.
-4. query4: get the request sent in the path localhost: 8080 / api / 4. As a return value
+4. query4: get the request sent in the path *localhost:8080/api/4*. As a return value
 we get the player who has the best score in a certain category as well as what that score is.
-5. query5: get the request sent to the path localhost: 8080 / api / 5. As a return value
+5. query5: get the request sent to the path 5localhost:8080/api/5*. As a return value
 we get the top 5 players who scored the most “double-doubles” and how many they scored
 "double-double".
-6. query6: get the request sent in the path localhost: 8080 / api / 6. As a return value we get sorted teams by the percentage of victories, if the percentage of victories is the same
+6. query6: get the request sent in the path *localhost:8080/api/6*. As a return value we get sorted teams by the percentage of victories, if the percentage of victories is the same
 then they are ranked by oblique difference. We have data on the percentage of victories and what the percentage is
 is a piece of difference.
 
 ### List of used technologies with a short description:
-The Java Spring Boot framework was used to create the backend part of the project, and the frontend was used to create the frontend
-part of the project used the Vue JS framework. In the backend in the Controller class we have paths to get
+The Java Spring Boot framework was used to create the backend part of the project, and Vue.js was used to create the frontend. In the backend in the Controller class we have paths to get
 requests, and then in the frontend we take that data that we sent and display it in the browser.
 We did not use any database, but we take the data from json files. Reading from files we work in the StorageReader class.
 
